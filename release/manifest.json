@@ -17,12 +17,12 @@
       "sha256": "e1348784e77f99e723066555a26b1d548c124653d6d4def33bf945f12a85aea3"
     },
     "bonggu-v2-desktop.blend": {
-      "bytes": 6476423,
-      "sha256": "60530bcd3025157e4dcd4457b99d2b66b272cb9d7c032d7bcab62c17f6d4f283"
+      "bytes": 3179700,
+      "sha256": "3c0dec341a9d489f425aae197c279d959fdb148b1cc3257073006d845d8f4f64"
     },
     "bonggu-v2-desktop.glb": {
-      "bytes": 6083524,
-      "sha256": "d71c20a77b558ba029ca97636434d97bc63fb94166f12f1910d8cdfa3cdea356"
+      "bytes": 2782712,
+      "sha256": "5d4ac5b5e01ee67c19abfac4eae09c7856c02fdfb4910b239a1931a514a3fb38"
     },
     "bonggu-color-4k.png": {
       "bytes": 5183477,
@@ -71,7 +71,7 @@
       },
       "desktop": {
         "file": "bonggu-v2-desktop.glb",
-        "bytes": 6083524,
+        "bytes": 2782712,
         "triangles": 34997,
         "embedded_texture": true,
         "unlit": true

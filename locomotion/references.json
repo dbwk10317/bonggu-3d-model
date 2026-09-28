@@ -1,0 +1,35 @@
+{
+  "method": "Timing and ordering come from published canine gait and behaviour studies, the Shih Tzu breed standard, and public YouTube videos of Shih Tzus sampled frame by frame at 30 fps. Amplitudes are artistic choices for this illustrated rig, not motion capture, and gait timing is scaled to a small dog of Bonggu's size.",
+  "parameters": {
+    "walk": "Lateral-sequence walk, stride 0.533 s (1.9 Hz), duty factor 0.64, level topline with a 1.2 mm dip at each mid-stance, pelvis and shoulders roll and yaw in opposition, head carried high with a small nod after each forefoot strike.",
+    "trot": "Diagonal trot, stride 0.333 s (3.0 Hz), duty factor 0.45. Measured about 0.29 s per stride in a Shih Tzu walk video; body-mass scaling of trot frequency gives about 2.9 to 3.3 Hz for a 5 to 7 kg dog.",
+    "sit": "Stand to sit is staged: hip flexion first, then stifle and hock fold, forelegs kept upright; the rump reaches the floor. Sit to stand extends the hip before the stifle and hock, after a short forward lean, in 0.9 s.",
+    "lie": "Nose leads down, the forelegs fold first (a brief bow), the rear follows, then the head comes back up; about 1.3 s in video, 1.4 s here. Resting pose is sphinx-like, chest and belly on the floor, forearms flat and parallel.",
+    "breathing": "3 s cycle (about 20 breaths a minute at rest), shown as ribcage widening, deeper when lying.",
+    "head": "Quick turns of about 0.2 s followed by a still hold, rather than a continuous sweep.",
+    "sniffing": "Nose pulses at 5 Hz in bouts with pauses.",
+    "tail_wag": "Relaxed wag 2.25 Hz, greeting wag 3.5 Hz with the rear wagging along; both close to sinusoidal.",
+    "secondary_motion": "Ears and tail follow head and body motion as damped springs (ears 3 Hz, damping 0.2; tail 3.5 Hz, damping 0.3). In the videos the long ears flap with every step."
+  },
+  "sources": [
+    {"url": "https://images.akc.org/pdf/breeds/standards/ShihTzu.pdf", "title": "AKC Shih Tzu breed standard", "used_for": ["Walk", "Run"], "observation": "Smooth, effortless gait with good reach and drive, level topline, naturally high head carriage, tail carried in a curve over the back."},
+    {"url": "https://shihtzu.org/?q=ill_gait", "title": "American Shih Tzu Club, Illustrated Guide to the Standard: Gait", "used_for": ["Walk", "Run"], "observation": "No bounce or roll in the gait; the dog moves at its own natural speed."},
+    {"doi": "10.1242/jeb.138.1.301", "title": "Heglund & Taylor 1988, Speed, stride frequency and energy cost per stride", "used_for": ["Walk", "Run"], "observation": "Stride frequency at equivalent speeds scales with about the -0.15 power of body mass."},
+    {"doi": "10.3389/fvets.2018.00256", "title": "Pressure mat analysis of walk and trot in 66 small to giant breed dogs", "used_for": ["Walk", "Run"], "observation": "Dogs under 10 kg walked at about 0.75 m/s and trotted at about 1.28 m/s at preferred speed."},
+    {"doi": "10.1371/journal.pone.0198893", "title": "Automatic characterization of stride parameters in canines with a single wearable inertial sensor", "used_for": ["Walk", "Run"], "observation": "Duty factor mostly 50 to 80 % at the walk and 40 to 60 % at the trot."},
+    {"doi": "10.3389/fbioe.2018.00162", "title": "Limb kinematics, kinetics and muscle dynamics during the sit-to-stand transition in greyhounds", "used_for": ["SitDown", "SitUp"], "observation": "Sit to stand took 1.14 s on average; hip, then knee, then ankle extension (proximal to distal)."},
+    {"doi": "10.1038/s41467-021-21405-y", "title": "Sniffing speeds up chemical detection by controlling air-flows near sensors", "used_for": ["GroundSniff"], "observation": "Dogs sniff at 4 to 8 Hz, about 5 Hz."},
+    {"doi": "10.1016/j.rvsc.2011.12.014", "title": "Sleeping respiratory rates in apparently healthy adult dogs", "used_for": ["Idle", "SitIdle", "LieIdle", "TailLowIdle"], "observation": "Mean resting rate 19 breaths a minute, sleeping 13 to 15."},
+    {"doi": "10.64898/2026.03.01.708848", "title": "From wag to affect: tail kinematic signatures of canine emotional states", "used_for": ["TailWagSoft", "TailWagHappy"], "observation": "Wagging defined from 1 Hz upward; tails were carried higher in positive anticipation."},
+    {"url": "https://www.youtube.com/watch?v=hgS6OG79A2g", "title": "귀를 휘날리며 걷는 시츄 주말 아침산책", "used_for": ["Run", "Walk"], "observation": "Near forefoot touchdowns about 0.29 s apart; ears lift and flap every step; head bobs slightly."},
+    {"url": "https://www.youtube.com/watch?v=BiNPGDBLnuE", "title": "간식 사수를 위한 개인기 손! 엎드려! (시츄)", "used_for": ["LieDown", "LieIdle", "LieUp"], "observation": "Nose follows the treat down, forelegs fold first, then the head rises once settled; forearms flat and parallel with the head held up."},
+    {"url": "https://www.youtube.com/watch?v=N-8RxRbmp7U", "title": "시츄일상) 꼬리흔들기의 달인", "used_for": ["TailWagSoft"], "observation": "Standing relaxed wag with a dominant frequency near 2.25 Hz over 2.5 s of 30 fps frames."},
+    {"url": "https://www.youtube.com/watch?v=JEJzmFjSNOA", "title": "꼬리흔드는거 잘한다구 해주는 엄마 (시츄)", "used_for": ["TailWagHappy", "PlayBow"], "observation": "Praised, seated wag at 3.5 Hz, nearly sinusoidal, over 4 s of 30 fps frames."},
+    {"url": "https://www.youtube.com/watch?v=zOc9QRBcN9w", "title": "Slow Motion on Beautiful Shih Tzu", "used_for": ["Run"], "observation": "Tail stays up in a plume and bounces while the dog moves quickly; ears swing loosely."}
+  ],
+  "limitations": [
+    "Public videos show other Shih Tzus, not Bonggu. Recording Bonggu from the side at 60 fps would be the best reference.",
+    "Video cadence was read at 30 fps, so values near 15 Hz could not be resolved; wag values come from a tail-region signal and its dominant frequency.",
+    "The walk is a leisurely pace for a desktop pet; stride length is limited by the rig's short forelegs."
+  ]
+}

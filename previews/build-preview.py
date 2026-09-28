@@ -32,7 +32,7 @@ chapters = [';FFMETADATA1', 'title=Bonggu - Action samples']
 segments = []
 for number, (folder, clip) in enumerate(clips, 1):
     name = clip['name']
-    repeats = {'Walk': 3, 'Run': 6}.get(name, 1)
+    repeats = {'Walk': 6, 'Run': 9}.get(name, 1)
     frames = round(clip['duration_seconds'] * 30) * repeats
     source = root / folder / clip['preview']
     assert source.is_file(), source
@@ -68,7 +68,7 @@ subprocess.run([ffmpeg, '-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i',
                 '-i', str(metadata), '-map', '0:v:0', '-map_metadata', '1', '-map_chapters', '1',
                 '-c:v', 'copy', '-movflags', '+faststart', str(video)], check=True)
 report = json.loads(subprocess.check_output([ffprobe, '-v', 'error', '-select_streams', 'v:0',
-                    '-show_streams', '-show_chapters', '-of', 'json', str(video)], text=True))
+                    '-show_streams', '-show_chapters', '-of', 'json', str(video)], text=True, encoding='utf-8'))
 stream = report['streams'][0]
 assert (stream['width'], stream['height'], stream['r_frame_rate']) == (800, 830, '30/1')
 assert int(stream['nb_frames']) == frame_start

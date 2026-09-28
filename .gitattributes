@@ -2,7 +2,7 @@
 *.py text eol=lf
 *.md text eol=lf
 *.json text eol=lf
-*.blend binary
-*.glb binary
-*.png binary
-*.mp4 binary
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.glb filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text

@@ -5,95 +5,105 @@
   "forward_axis": "-Y in Blender; +Z in glTF",
   "units": "metres",
   "root_motion": false,
+  "morph_animation": false,
   "clips": [
     {
       "name": "Idle",
       "label": "서서 쉬기",
-      "duration_seconds": 3.0,
+      "duration_seconds": 6.0,
       "loop": true,
       "entry_state": "stand",
       "exit_state": "stand",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "Idle.mp4"
     },
     {
       "name": "Walk",
       "label": "걷기",
-      "duration_seconds": 1.2,
+      "duration_seconds": 0.5333333333333333,
       "loop": true,
       "entry_state": "walk",
       "exit_state": "walk",
-      "forward_speed_mps": 0.08928571428571429,
+      "forward_speed_mps": 0.263671875,
+      "smile": 0.0,
       "preview": "Walk.mp4"
     },
     {
       "name": "Run",
       "label": "가볍게 달리기",
-      "duration_seconds": 0.6,
+      "duration_seconds": 0.3333333333333333,
       "loop": true,
       "entry_state": "run",
       "exit_state": "run",
-      "forward_speed_mps": 0.376984126984127,
+      "forward_speed_mps": 0.6666666666666667,
+      "smile": 0.32,
       "preview": "Run.mp4"
     },
     {
       "name": "SitDown",
       "label": "앉기",
-      "duration_seconds": 1.4,
+      "duration_seconds": 1.2,
       "loop": false,
       "entry_state": "stand",
       "exit_state": "sit",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "SitDown.mp4"
     },
     {
       "name": "SitIdle",
       "label": "앉아서 쉬기",
-      "duration_seconds": 3.0,
+      "duration_seconds": 6.0,
       "loop": true,
       "entry_state": "sit",
       "exit_state": "sit",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "SitIdle.mp4"
     },
     {
       "name": "SitUp",
       "label": "앉았다 일어나기",
-      "duration_seconds": 1.2,
+      "duration_seconds": 0.9,
       "loop": false,
       "entry_state": "sit",
       "exit_state": "stand",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "SitUp.mp4"
     },
     {
       "name": "LieDown",
       "label": "엎드리기",
-      "duration_seconds": 1.6,
+      "duration_seconds": 1.4,
       "loop": false,
       "entry_state": "stand",
       "exit_state": "lie",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "LieDown.mp4"
     },
     {
       "name": "LieIdle",
       "label": "엎드려 쉬기",
-      "duration_seconds": 3.0,
+      "duration_seconds": 6.0,
       "loop": true,
       "entry_state": "lie",
       "exit_state": "lie",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "LieIdle.mp4"
     },
     {
       "name": "LieUp",
       "label": "엎드렸다 일어나기",
-      "duration_seconds": 1.4,
+      "duration_seconds": 1.2,
       "loop": false,
       "entry_state": "lie",
       "exit_state": "stand",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "LieUp.mp4"
     },
     {
@@ -104,6 +114,7 @@
       "entry_state": "stand",
       "exit_state": "stand",
       "forward_speed_mps": 0.0,
+      "smile": 0.4,
       "preview": "PlayBow.mp4"
     },
     {
@@ -114,6 +125,7 @@
       "entry_state": "stand",
       "exit_state": "stand",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "LookAround.mp4"
     },
     {
@@ -124,6 +136,7 @@
       "entry_state": "stand",
       "exit_state": "stand",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "GroundSniff.mp4"
     },
     {
@@ -134,6 +147,7 @@
       "entry_state": "stand",
       "exit_state": "stand",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "LookUp.mp4"
     },
     {
@@ -144,6 +158,7 @@
       "entry_state": "stand",
       "exit_state": "stand",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "TailWagSoft.mp4"
     },
     {
@@ -154,6 +169,7 @@
       "entry_state": "stand",
       "exit_state": "stand",
       "forward_speed_mps": 0.0,
+      "smile": 0.45,
       "preview": "TailWagHappy.mp4"
     },
     {
@@ -164,31 +180,35 @@
       "entry_state": "stand",
       "exit_state": "tail-low",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "TailLower.mp4"
     },
     {
       "name": "TailLowIdle",
       "label": "꼬리 내린 채 쉬기",
-      "duration_seconds": 3.0,
+      "duration_seconds": 6.0,
       "loop": true,
       "entry_state": "tail-low",
       "exit_state": "tail-low",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "TailLowIdle.mp4"
     },
     {
       "name": "TailRaise",
       "label": "꼬리 다시 올리기",
-      "duration_seconds": 1.4,
+      "duration_seconds": 1.2,
       "loop": false,
       "entry_state": "tail-low",
       "exit_state": "stand",
       "forward_speed_mps": 0.0,
+      "smile": 0.0,
       "preview": "TailRaise.mp4"
     }
   ],
   "previous_behaviors": "../animations/bonggu-v2-behaviors.glb",
   "locomotion_blend_seconds": 0.18,
+  "references": "references.json",
   "neck_preview": "neck-movements.mp4",
   "preview": "everyday-preview.mp4",
   "sit_preview": "sit-sequence.mp4",

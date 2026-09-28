@@ -9,7 +9,7 @@ target=Vector((0,.015,.15));cam=scene.camera;cam.data.ortho_scale=.52
 cam.location=target+Vector((.65,-1,.33));cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler()
 scene.render.resolution_x=800;scene.render.resolution_y=720;scene.render.resolution_percentage=100;scene.render.fps=30
 scene.render.image_settings.file_format='PNG';scene.render.image_settings.color_mode='RGB'
-for clip in json.loads((out/'clips.json').read_text())['clips']:
+for clip in json.loads((out/'clips.json').read_text(encoding='utf-8'))['clips']:
     name=clip['name']
     target=Vector((0,.04,.15) if name.startswith('Tail') else (0,.015,.15))
     cam.data.ortho_scale=.60 if name.startswith('Tail') else .52

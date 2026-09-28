@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image,ImageDraw,ImageFont
 
 out=Path(__file__).resolve().parent
-manifest=json.loads((out/'clips.json').read_text())
+manifest=json.loads((out/'clips.json').read_text(encoding='utf-8'))
 ff=shutil.which('ffmpeg');probe=shutil.which('ffprobe')
 if not ff or not probe:
     raise SystemExit('Install ffmpeg and ffprobe and add them to PATH.')
@@ -41,10 +41,10 @@ def sequence(name,clips):
     return dest.name
 
 manifest['neck_preview']=sequence('neck-movements',['LookAround','GroundSniff','LookUp'])
-manifest['preview']=sequence('everyday-preview',['Idle']+['Walk']*3+['Run']*6+['SitDown','SitIdle','SitUp','LieDown','LieIdle','LieUp','PlayBow','LookAround','GroundSniff','LookUp'])
+manifest['preview']=sequence('everyday-preview',['Idle']+['Walk']*6+['Run']*9+['SitDown','SitIdle','SitUp','LieDown','LieIdle','LieUp','PlayBow','LookAround','GroundSniff','LookUp'])
 manifest['sit_preview']=sequence('sit-sequence',['SitDown','SitIdle','SitUp'])
 manifest['lie_preview']=sequence('lie-sequence',['LieDown','LieIdle','LieUp'])
 manifest['tail_preview']=sequence('tail-movements',['TailWagSoft','TailWagHappy','TailLower','TailLowIdle','TailRaise'])
-(out/'clips.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+(out/'clips.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 (out/'preview-checks.json').write_text(json.dumps(report,indent=2)+'\n')
 print('PREVIEWS_PACKAGED')
