@@ -5,6 +5,11 @@ Blender 원본, GLB, 리그와 동작을 담고 있습니다. 데스크톱 앱 �
 
 ![승인된 봉구의 정적 외형](release/bonggu-v2-preview.png)
 
+**[전체 행동 프리뷰 보기 · 1분 3초](previews/bonggu-actions-preview.mp4)**
+
+최신 18개 동작과 이전 리그의 앞발 긁기·냄새 찾기·하울링까지 21개 샘플을 이어 붙였습니다.
+영상에 동작 이름과 리그 구분을 표시하며, 걷기·달리기는 반복해서 보여줍니다. 소리는 없습니다.
+
 ## 사용할 파일
 
 | 목적 | 파일 |
@@ -70,5 +75,7 @@ blender -b --python-exit-code 1 --python locomotion/verify-locomotion.py
 환경에서 `python3 locomotion/package-previews.py`로 인코딩합니다. FFmpeg와 FFprobe는 PATH에서 찾습니다.
 한글 폰트는 macOS/Windows 기본 폰트를 사용하거나 `BONGGU_FONT`에 폰트 경로를 지정합니다.
 임시 렌더 프레임은 Git에서 제외됩니다.
+
+통합 영상은 기존 개별 MP4를 사용해 `python3 previews/build-preview.py`로 다시 만들 수 있습니다.
 
 에이전트 작업 지침은 [AGENTS.md](AGENTS.md)와 [CLAUDE.md](CLAUDE.md)에 있습니다.
