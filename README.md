@@ -82,7 +82,8 @@ blender -b --python-exit-code 1 --python locomotion/verify-locomotion.py
 ```
 
 중립 리그까지 재생성할 때는 `locomotion/prepare-tail-rig.py`를 먼저 실행합니다. 꼬리 표면을 다시 만들고,
-앉거나 엎드릴 때 접힌 뒷다리가 엉덩이를 뚫지 않도록 엉덩이~발목 가중치를 다듬은 중립 리그를 만듭니다.
+허벅지·어깨 살이 대퇴골·견갑골을 따르도록 가중치를 넓힌 뒤, 앉거나 엎드릴 때 접힌 뒷다리가 엉덩이를
+뚫지 않도록 엉덩이~발목 가중치를 다듬은 중립 리그를 만듭니다.
 다시 실행해도 형상·UV·Smile·가중치는 같고, 꼬리 색은 부동소수점 끝자리 수준(1e-7 미만)만 달라집니다.
 더 앞 단계의 편집 소스는 `expressions/smile/refined/`, `rigged/`, `rigged/anatomy/`에 있습니다.
 고화질 정적 모델은 완성된 원본으로 제공하며 Meshy 생성 과정은 이 저장소의 재생성 범위에 포함하지 않습니다.

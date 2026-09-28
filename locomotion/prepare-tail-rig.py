@@ -129,6 +129,28 @@ names=[g.name for g in pet.vertex_groups];n=len(pet.data.vertices);W=np.zeros((n
 for v in pet.data.vertices:
  for g in v.groups:W[v.index,g.group]=g.weight
 rest=np.array([v.co[:] for v in pet.data.vertices]);edges=np.array([e.vertices[:] for e in pet.data.edges]);degree=np.bincount(edges.ravel(),minlength=n)
+# Upper limbs: the thigh follows the femur up to the hip joint and the shoulder follows the scapula and
+# upper arm, as in real dogs, instead of staying on the trunk. Within a capsule around each upper limb
+# segment, body weight moves to the limb until the limb holds up to 70 %; the flank fades in between.
+gi={name:i for i,name in enumerate(names)}
+def capsule(a,b,r0,r1):
+ a=np.array(a);b=np.array(b);v=b-a;t=np.clip((rest-a)@v/(v@v),0,1);d=np.linalg.norm(rest-(a+t[:,None]*v),axis=1)
+ u=np.clip((d-r0)/(r1-r0),0,1);return .7*(1-u*u*(3-2*u)),t
+def cover(f,limb,take,split=None):
+ have=W[:,[gi[x] for x in limb]].sum(axis=1);body=[gi[x] for x in take];pool=W[:,body].sum(axis=1)
+ move=np.minimum(np.clip(f-have,0,None),pool);scale=np.divide(pool-move,pool,out=np.ones_like(pool),where=pool>1e-9)
+ W[:,body]*=scale[:,None]
+ if split is None:W[:,gi[limb[0]]]+=move
+ else:W[:,gi[limb[0]]]+=move*(1-split);W[:,gi[limb[1]]]+=move*split
+bone=lambda x:rig.data.bones[x]
+for side,s in [('L',1),('R',-1)]:
+ # Only the outer side: the chest and belly between the legs stay on the trunk.
+ side_x=np.clip((rest[:,0]*s-.02)/.015,0,1);on=side_x*side_x*(3-2*side_x)
+ f,_=capsule(bone('Hind.Upper.'+side).head_local,bone('Hind.Upper.'+side).tail_local,.025,.08)
+ cover(f*on,['Hind.Upper.'+side],['Pelvis','Spine.01','Spine.02'])
+ top=bone('Scapula.'+side).head_local;elbow=bone('Fore.Upper.'+side).tail_local;joint=bone('Fore.Upper.'+side).head_local
+ f,t=capsule(top,elbow,.02,.075);tj=(np.array(joint-top)@np.array(elbow-top))/((elbow-top).length**2)
+ cover(f*on,['Scapula.'+side,'Fore.Upper.'+side],['Chest','Spine.04','Spine.03'],split=np.clip((t-tj+.15)/.3,0,1))
 region=(rest[:,1]>.08)&(rest[:,2]<.17)&(degree>0)
 cols=[i for i,name in enumerate(names) if name=='Pelvis' or name.startswith(('Hind.Upper','Hind.Lower','Hind.Hock'))];share=W[:,cols].sum(axis=1)
 for _ in range(SMOOTHING):
@@ -148,6 +170,7 @@ pet.data.color_attributes.active_color=pet.data.color_attributes['TailPaint']
 scene.frame_set(1);bpy.context.view_layer.update()
 pet.data.calc_loop_triangles()
 report={'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'protected_vertices_unchanged':int(protected.sum()),'triangles':len(pet.data.loop_triangles),'native_bones':len(rig.data.bones),'skin_joints':sum(b.use_deform for b in rig.data.bones),'max_influences':4,'changes':'Rebuilt the welded tail plume as a deformable curved surface, closed and smoothed the back contact, transferred source paint to linear vertex colors. Face and body outside the tail contact region are unchanged.','texture_sha256':sorted(hashlib.sha256(im.packed_file.data).hexdigest() for im in bpy.data.images if im.packed_file),
+ 'limb_coverage':{'max_share':.7,'hind':'capsule around Hind.Upper, 0.025-0.08 m','fore':'capsule from Scapula top to elbow, 0.02-0.075 m','outer_side_only':'x beyond 0.02-0.035 m'},
  'hip_weight_smoothing':{'iterations':SMOOTHING,'vertices':int(region.sum()),'groups':'Pelvis, Hind.Upper, Hind.Lower, Hind.Hock','region':'rest pose y > 0.08 m and z < 0.17 m','appearance_unchanged':True}}
 (OUT/'tail-rig-checks.json').write_text(json.dumps(report,indent=2)+'\n')
 bpy.ops.file.pack_all();bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'bonggu-v2-tail-rig.blend'))

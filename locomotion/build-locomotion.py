@@ -96,11 +96,11 @@ def sit(hip=1., leg=1., front=1.):
     rotate('Spine.02', x=-.05*front)
     rotate('CTRL.Look', x=.55*hip)
     for side, sign in [('L', 1), ('R', -1)]:
-        # Hind paws a little out to the side, as Shih Tzus often sit, keep the folded hock beside
-        # the thigh instead of inside the rump (prepare-tail-rig.py also smooths the hip skin).
-        move('CTRL.HindPaw.'+side, (sign*.048*leg, -.056*leg, 0))
-        move('CTRL.HindPole.'+side, (sign*.025*leg, -.035*leg, -.025*leg))
-        rotate('CTRL.Hock.'+side, x=-1.15*leg)
+        # Stifles forward beside the belly and hocks tucked along the body; the thigh skin follows
+        # the femur (prepare-tail-rig.py), so the legs need not splay out to clear the rump.
+        move('CTRL.HindPaw.'+side, (sign*.024*leg, -.056*leg, 0))
+        move('CTRL.HindPole.'+side, (sign*.015*leg, -.070*leg, 0))
+        rotate('CTRL.Hock.'+side, x=-.95*leg)
         move('CTRL.ForePaw.'+side, (0, .012*front, 0))
 
 def lie(front=1., rear=1.):
