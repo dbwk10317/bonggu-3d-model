@@ -122,6 +122,31 @@ for k in pet.data.shape_keys.key_blocks:
  actual=np.array([v.co[:] for v in k.data]);mask=(actual[:,1]<=.075)|(actual[:,2]<=.195)
  def rows(x):return sorted(tuple(round(float(c),7) for c in row) for row in x)
  assert rows(actual[mask])==rows(original),k.name
+# Face keys for yawning and sleeping, built from the approved Smile mouth and painted eyes.
+def sm01(t):t=np.clip(t,0,1);return t*t*(3-2*t)
+face_co=np.array([v.co[:] for v in pet.data.vertices]);face_smile=np.array([v.co[:] for v in pet.data.shape_keys.key_blocks['Smile'].data])
+# Yawn: the Smile mouth with its lower jaw swung further open about the jaw hinge, so the mouth
+# opens under the nose; the lip corners and the chin surface are not cut or pulled wider.
+HINGE=(-.1464,.2462);JAW=.30
+a=JAW*sm01(np.linalg.norm(face_smile-face_co,axis=1)/.012);ry=face_smile[:,1]-HINGE[0];rz=face_smile[:,2]-HINGE[1]
+yawn=face_smile.copy();yawn[:,1]=HINGE[0]+ry*np.cos(a)-rz*np.sin(a);yawn[:,2]=HINGE[1]+ry*np.sin(a)+rz*np.cos(a)
+# EyesClosed: each painted eye is squashed onto a lid line curving down at the corners, and the
+# fur above slides down over it, projected back onto the face from the front.
+pet.data.calc_loop_triangles()
+face_bvh=BVHTree.FromPolygons([Vector(c) for c in face_co],[t.vertices[:] for t in pet.data.loop_triangles],all_triangles=True)
+EYE_X,EYE_Z,RX,RD,RU,FALL,LID=.028,.2637,.014,.010,.011,.015,-.0088
+closed=face_co.copy();front=sm01((-.115-face_co[:,1])/.015)
+for s in (1,-1):
+ dx=face_co[:,0]-s*EYE_X;dz=face_co[:,2]-EYE_Z;lid=LID-.0025*(dx/RX)**2
+ w=(1-sm01((np.abs(dx)-.75*RX)/(.5*RX)))*front
+ for i in np.where((w>0)&(dz>-RD)&(dz<RU+FALL))[0]:
+  z=dz[i];nz=-RD+(z+RD)/(RU+RD)*(lid[i]+RD) if z<=RU else lid[i]+(z-RU)/FALL*(RU+FALL-lid[i])
+  nz=z+(nz-z)*w[i];hit=face_bvh.ray_cast(Vector((face_co[i,0],-.3,EYE_Z+nz)),Vector((0,1,0)))[0]
+  closed[i]=(face_co[i,0],face_co[i,1]+((hit.y if hit else face_co[i,1])-face_co[i,1])*w[i],EYE_Z+nz)
+for name,data,text in [('Yawn',yawn,'Yawn, the Smile mouth opened wider. The app sets it from clips.json morphs.'),('EyesClosed',closed,'0 open, 1 closed. The app sets it from clips.json morphs.')]:
+ key=pet.shape_key_add(name=name,from_mix=False);key.data.foreach_set('co',data.astype(np.float32).ravel())
+ rig[name]=0.;rig.id_properties_ui(name).update(min=0,max=1,description=text)
+ d=key.driver_add('value').driver;d.type='AVERAGE';var=d.variables.new();var.name='control';var.type='SINGLE_PROP';var.targets[0].id=rig;var.targets[0].data_path=f'["{name}"]'
 # Smooth hip-to-hock weights so folded hind legs (sitting, lying) do not cut into the rump.
 # Only Pelvis and hind-leg shares move between neighbours; spine, tail and the mesh stay as they are.
 SMOOTHING=20
@@ -170,6 +195,7 @@ pet.data.color_attributes.active_color=pet.data.color_attributes['TailPaint']
 scene.frame_set(1);bpy.context.view_layer.update()
 pet.data.calc_loop_triangles()
 report={'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'protected_vertices_unchanged':int(protected.sum()),'triangles':len(pet.data.loop_triangles),'native_bones':len(rig.data.bones),'skin_joints':sum(b.use_deform for b in rig.data.bones),'max_influences':4,'changes':'Rebuilt the welded tail plume as a deformable curved surface, closed and smoothed the back contact, transferred source paint to linear vertex colors. Face and body outside the tail contact region are unchanged.','texture_sha256':sorted(hashlib.sha256(im.packed_file.data).hexdigest() for im in bpy.data.images if im.packed_file),
+ 'face_keys':{'Yawn':{'from':'Smile','jaw_hinge_yz':HINGE,'extra_jaw_radians':JAW},'EyesClosed':{'eye_centre_xz':[EYE_X,EYE_Z],'lid_line_below_centre_m':-LID},'changed_vertices':{'Yawn':int((np.abs(yawn-face_co).max(axis=1)>1e-6).sum()),'EyesClosed':int((np.abs(closed-face_co).max(axis=1)>1e-6).sum())}},
  'limb_coverage':{'max_share':.7,'hind':'capsule around Hind.Upper, 0.025-0.08 m','fore':'capsule from Scapula top to elbow, 0.02-0.075 m','outer_side_only':'x beyond 0.02-0.035 m'},
  'hip_weight_smoothing':{'iterations':SMOOTHING,'vertices':int(region.sum()),'groups':'Pelvis, Hind.Upper, Hind.Lower, Hind.Hock','region':'rest pose y > 0.08 m and z < 0.17 m','appearance_unchanged':True}}
 (OUT/'tail-rig-checks.json').write_text(json.dumps(report,indent=2)+'\n')

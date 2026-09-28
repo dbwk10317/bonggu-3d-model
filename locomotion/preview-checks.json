@@ -106,5 +106,35 @@
     "height": 782,
     "duration": "1.200000",
     "nb_frames": "36"
+  },
+  "Yawn.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "3.200000",
+    "nb_frames": "96"
+  },
+  "FallAsleep.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "3.600000",
+    "nb_frames": "108"
+  },
+  "SleepIdle.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "8.000000",
+    "nb_frames": "240"
+  },
+  "WakeUp.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "2.000000",
+    "nb_frames": "60"
+  },
+  "Dangle.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "6.000000",
+    "nb_frames": "180"
   }
 }

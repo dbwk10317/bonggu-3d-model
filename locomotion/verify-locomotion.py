@@ -5,7 +5,7 @@ from pathlib import Path
 from mathutils import Vector
 out=Path(__file__).resolve().parent
 manifest=json.loads((out/'clips.json').read_text(encoding='utf-8'));expected={c['name']:c for c in manifest['clips']}
-state_loop={'stand':'Idle','walk':'Walk','run':'Run','sit':'SitIdle','lie':'LieIdle','tail-low':'TailLowIdle'}
+state_loop={'stand':'Idle','walk':'Walk','run':'Run','sit':'SitIdle','lie':'LieIdle','tail-low':'TailLowIdle','sleep':'SleepIdle','held':'Dangle'}
 def sha(x):return hashlib.sha256(x).hexdigest()
 def ah(x):return sha(np.array(x,dtype=np.float32).tobytes())
 def fingerprint():
@@ -50,12 +50,13 @@ def image_size(im):
 assert max(max(image_size(im)) for im in j['images'])<=2048,[image_size(im) for im in j['images']]
 triangles=sum(j['accessors'][p['indices']]['count']//3 for p in j['meshes'][0]['primitives']);assert triangles==tail_checks['triangles']
 assert any('COLOR_0' in p['attributes'] for p in j['meshes'][0]['primitives'])
-# At most four bone influences per vertex, and the Smile morph belongs to the app, not the clips.
+# At most four bone influences per vertex, and the face morphs belong to the app, not the clips.
 assert all('JOINTS_1' not in p['attributes'] for p in j['meshes'][0]['primitives'])
-assert j['meshes'][0]['extras']['targetNames']==['Smile']
+assert j['meshes'][0]['extras']['targetNames']==['Smile','Yawn','EyesClosed']
+assert all(set(c.get('morphs',{}))<={'Yawn','EyesClosed'} for c in manifest['clips'])
 assert not any(c['target']['path']=='weights' for a in j['animations'] for c in a['channels'])
 report={'prepared_rig_appearance_preserved':True,'tail_topology_updated':True,'protected_vertices_unchanged':tail_checks['protected_vertices_unchanged'],'native_bones':112,'skin_joints':78,'triangles':triangles,
-    'max_texture_size':max(max(image_size(im)) for im in j['images']),'morph_animation':False,'bytes':len(raw),'clips':{}}
+    'max_texture_size':max(max(image_size(im)) for im in j['images']),'morph_targets':j['meshes'][0]['extras']['targetNames'],'morph_animation':False,'bytes':len(raw),'clips':{}}
 ends={}
 for animation in j['animations']:
     name=animation['name'];spec=expected[name];samples=animation['samplers']
@@ -80,14 +81,17 @@ for name,spec in expected.items():
             assert error<1e-4,(name,loop,key,error)
 report['transition_endpoints_match']=True
 # Compare native and reimported images at a quarter, half and three quarters of each clip.
-target=Vector((0,.015,.15));cam=scene.camera;cam.data.ortho_scale=.52
-cam.location=target+Vector((.65,-1,.33));cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler()
+def aim_camera(name):
+    # Held up, Bonggu is about twice as tall as standing.
+    held=expected[name]['entry_state']=='held';target=Vector((0,.015,.30 if held else .15));cam=scene.camera;cam.data.ortho_scale=.72 if held else .52
+    cam.location=target+Vector((.65,-1,.33));cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler()
 scene.render.resolution_x=800;scene.render.resolution_y=720;scene.render.resolution_percentage=100
 scene.render.image_settings.file_format='PNG';scene.render.image_settings.color_mode='RGB';scene.render.fps=30
 samples={name:sorted({round(c['duration_seconds']*30*q)+1 for q in (.25,.5,.75)}) for name,c in expected.items()}
 native={}
 for name,frames in samples.items():
     for track in rig.animation_data.nla_tracks:track.mute=track.name!=name
+    aim_camera(name)
     for frame in frames:
         scene.frame_set(frame);scene.render.filepath=str(out/f'check-{name}-{frame:03}.png');bpy.ops.render.render(write_still=True)
         image=bpy.data.images.load(scene.render.filepath,check_existing=False);native[name,frame]=np.array(image.pixels[:]);bpy.data.images.remove(image)
@@ -96,14 +100,18 @@ for ob in list(bpy.data.objects):
 bpy.ops.import_scene.gltf(filepath=str(out/'bonggu-v2-everyday.glb'))
 bindings=[ob.animation_data for ob in scene.objects if ob.animation_data]
 for binding in bindings:binding.action=None
-smile_keys=[ob.data.shape_keys.key_blocks['Smile'] for ob in scene.objects if ob.type=='MESH' and ob.data.shape_keys]
+face_keys=[ob.data.shape_keys.key_blocks for ob in scene.objects if ob.type=='MESH' and ob.data.shape_keys]
 errors=[]
 for name,frames in samples.items():
     for binding in bindings:
         for track in binding.nla_tracks:track.mute=track.name!=name
-    # The app applies clips.json smile; do the same for the reimported mesh.
-    for key in smile_keys:key.value=expected[name]['smile']
+    # The app applies clips.json smile and morph curves; do the same for the reimported mesh.
+    for keys in face_keys:keys['Smile'].value=expected[name]['smile']
+    aim_camera(name)
     for frame in frames:
+        for keys in face_keys:
+            for k in ['Yawn','EyesClosed']:
+                curve=np.array(expected[name].get('morphs',{}).get(k,[[0,0]]));keys[k].value=float(np.interp((frame-1)/30,curve[:,0],curve[:,1]))
         scene.frame_set(frame);scene.render.filepath=str(out/f'verified-{name}-{frame:03}.png');bpy.ops.render.render(write_still=True)
         image=bpy.data.images.load(scene.render.filepath,check_existing=False);actual=np.array(image.pixels[:]);bpy.data.images.remove(image)
         error=float(np.abs(native[name,frame]-actual).mean());assert error<.005,(name,frame,error)

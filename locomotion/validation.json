@@ -6,8 +6,13 @@
   "skin_joints": 78,
   "triangles": 36968,
   "max_texture_size": 2048,
+  "morph_targets": [
+    "Smile",
+    "Yawn",
+    "EyesClosed"
+  ],
   "morph_animation": false,
-  "bytes": 6060440,
+  "bytes": 7076068,
   "clips": {
     "Idle": {
       "duration": 9.0,
@@ -116,14 +121,44 @@
       "channels": 234,
       "loop": false,
       "smile": 0.0
+    },
+    "Yawn": {
+      "duration": 3.2,
+      "channels": 234,
+      "loop": false,
+      "smile": 0.0
+    },
+    "FallAsleep": {
+      "duration": 3.6,
+      "channels": 234,
+      "loop": false,
+      "smile": 0.0
+    },
+    "SleepIdle": {
+      "duration": 8.0,
+      "channels": 234,
+      "loop": true,
+      "smile": 0.0
+    },
+    "WakeUp": {
+      "duration": 2.0,
+      "channels": 234,
+      "loop": false,
+      "smile": 0.0
+    },
+    "Dangle": {
+      "duration": 6.0,
+      "channels": 234,
+      "loop": true,
+      "smile": 0.0
     }
   },
   "transition_endpoints_match": true,
-  "reimport_render_checks": 54,
+  "reimport_render_checks": 69,
   "reimport_render_max_error": 0.0,
   "approved_release_unchanged": true,
   "sha256": {
-    "bonggu-v2-everyday.blend": "9b0a16c24db014bdc2de537b921d27f8534a1f44fab6b40642cca8012ff5eda7",
-    "bonggu-v2-everyday.glb": "45d8bb26e9ea3224c7fb1e5f6b518b30ea2fc8d4fcc7b540b0f2b2b3949ef336"
+    "bonggu-v2-everyday.blend": "c8627cafb9d2681a30df921739811e6c2d1f0deae67fc7110ded418811ed633e",
+    "bonggu-v2-everyday.glb": "f5559c45e2b5100d11b8afd119fdd9ffe3048c81772168543216b2957ff5f77a"
   }
 }

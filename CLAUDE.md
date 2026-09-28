@@ -29,7 +29,12 @@
   중립 리그를 만든다. 가중치를 바꾸면 앉기·엎드리기의 자기 교차(겹치는 삼각형)를 렌더와 함께 확인한다.
 - GLB는 정점당 최대 4개 본 영향과 내장 텍스처를 유지한다. 실행용 GLB에는 `release/`의 2K 텍스처를
   쓰고, 4K는 고화질 원본에만 둔다. Blender의 제약·드라이버는 계산된 변형 본 애니메이션으로 내보낸다.
-- `Smile`은 앱이 제어한다. 클립 GLB에는 모프 애니메이션을 넣지 않고 `clips.json`의 `smile` 값으로 전달한다.
+- 얼굴 모프(`Smile`, `Yawn`, `EyesClosed`)는 앱이 제어한다. 클립 GLB에는 모프 애니메이션을 넣지 않고
+  `clips.json`의 `smile` 값과 클립별 `morphs` 곡선으로 전달한다. `Yawn`은 `Smile`의 입에서 아래턱만 더 내린 것이고,
+  `EyesClosed`는 그려진 눈을 아래 눈꺼풀 선으로 누른 것이다. 둘 다 `prepare-tail-rig.py`가 만든다.
+- `Dangle`(안겨서 매달리기)과 옆으로 누운 잠자기(`FallAsleep`·`SleepIdle`·`WakeUp`)는 `IK=0`의 FK 다리로 만든다.
+  잠자기는 엎드린 자세의 IK 다리를 FK로 옮겨 받아 시작하므로 `LieIdle`과 끊김 없이 이어진다. 발 IK 조작점을 기준으로
+  이 클립들을 고치지 않는다. 아래쪽 귀는 바닥에 얹히도록 스프링에서 바닥 높이를 제한한다.
 - 동작 타이밍과 순서는 `locomotion/references.json`의 근거를 따른다. 모든 클립은 진입·종료 상태의
   대기 루프 첫 프레임에서 시작하고 끝나야 한다. 빌드가 이를 검사하므로 기준을 느슨하게 하지 않는다.
 - 그림 느낌의 재질은 `KHR_materials_unlit`을 유지한다. `TailPaint`의 Color를 Surface에 직접

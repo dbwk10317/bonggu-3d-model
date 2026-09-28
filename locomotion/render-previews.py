@@ -9,10 +9,14 @@ target=Vector((0,.015,.15));cam=scene.camera;cam.data.ortho_scale=.52
 cam.location=target+Vector((.65,-1,.33));cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler()
 scene.render.resolution_x=800;scene.render.resolution_y=720;scene.render.resolution_percentage=100;scene.render.fps=30
 scene.render.image_settings.file_format='PNG';scene.render.image_settings.color_mode='RGB'
+# Optional clip names after "--" render only those clips.
+only=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else []
 for clip in json.loads((out/'clips.json').read_text(encoding='utf-8'))['clips']:
     name=clip['name']
-    target=Vector((0,.04,.15) if name.startswith('Tail') else (0,.015,.15))
-    cam.data.ortho_scale=.60 if name.startswith('Tail') else .52
+    if only and name not in only:continue
+    held=clip['entry_state']=='held'
+    target=Vector((0,.04,.15) if name.startswith('Tail') else (0,.015,.30) if held else (0,.015,.15))
+    cam.data.ortho_scale=.60 if name.startswith('Tail') else .72 if held else .52
     cam.location=target+Vector((1,.4,.3) if name.startswith('Tail') else (.65,-1,.33))
     cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler()
     for track in rig.animation_data.nla_tracks:track.mute=track.name!=name

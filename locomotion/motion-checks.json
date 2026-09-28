@@ -1,5 +1,5 @@
 {
-  "source_sha256": "6a90a427d5864540a2504fbe5e2d9711b99638c312a882c04fa079aeea9b3fe0",
+  "source_sha256": "e42aa73d38b5bbc4bb826df128454141bdcf3e594027c3d1f160ffc6134d47ee",
   "clips": {
     "Idle": {
       "frames": 271,
@@ -180,6 +180,56 @@
       "rump_min_z": 0.11108624935150146,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 0.24137115478515625
+    },
+    "Yawn": {
+      "frames": 97,
+      "min_z": 0.0022082380019128323,
+      "max_ik_error": 5.600339315225522e-08,
+      "max_p99_edge_stretch": 1.180149775681844,
+      "max_frame_displacement": 0.0035431841478786334,
+      "rump_min_z": 0.11108624935150146,
+      "ventral_min_z": 0.08469894528388977,
+      "endpoint_difference": 0.0
+    },
+    "FallAsleep": {
+      "frames": 109,
+      "min_z": -0.0005331113934516907,
+      "max_ik_error": 0.0,
+      "max_p99_edge_stretch": 2.028067293616786,
+      "max_frame_displacement": 0.04050446447304629,
+      "rump_min_z": 0.027238212525844574,
+      "ventral_min_z": 0.0015035048127174377,
+      "endpoint_difference": 0.2558019831776619
+    },
+    "SleepIdle": {
+      "frames": 241,
+      "min_z": 0.0011333301663398743,
+      "max_ik_error": 0.0,
+      "max_p99_edge_stretch": 2.0320626497733305,
+      "max_frame_displacement": 0.00015177357097038343,
+      "rump_min_z": 0.027937740087509155,
+      "ventral_min_z": 0.02935110777616501,
+      "endpoint_difference": 0.0
+    },
+    "WakeUp": {
+      "frames": 61,
+      "min_z": 6.589293479919434e-05,
+      "max_ik_error": 0.0,
+      "max_p99_edge_stretch": 2.027906621743396,
+      "max_frame_displacement": 0.0466875626667774,
+      "rump_min_z": 0.027937740087509155,
+      "ventral_min_z": 0.02935110777616501,
+      "endpoint_difference": 0.2558019831776619
+    },
+    "Dangle": {
+      "frames": 181,
+      "min_z": 0.013536423444747925,
+      "max_ik_error": 0.0,
+      "max_p99_edge_stretch": 2.1807066947716516,
+      "max_frame_displacement": 0.006271833349222662,
+      "rump_min_z": 0.1747092604637146,
+      "ventral_min_z": 0.25099822878837585,
+      "endpoint_difference": 0.0
     }
   },
   "transition_endpoints_match": true

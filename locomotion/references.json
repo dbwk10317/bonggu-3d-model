@@ -12,7 +12,10 @@
     "secondary_motion": "Ears and tail follow head and body motion as damped springs (ears 3 Hz, damping 0.2; tail 3.5 Hz, damping 0.3). Authored tail waves lag about 0.24 rad per segment and widen toward the tip. In the videos the long ears flap with every step.",
     "scapula": "The forelimb has no clavicle, so the scapula protracts at touchdown and retracts toward lift-off (about 10 degrees each way at the walk, 12 at the trot).",
     "forelimb": "The carpus folds right after lift-off and opens before touchdown, lagging the forearm.",
-    "ears": "Long ears hang: when the head pitches or rolls they undo half of the change in droop, on top of the spring lag."
+    "ears": "Long ears hang: when the head pitches or rolls they undo half of the change in droop, on top of the spring lag.",
+    "yawn": "From an owner's photo of Bonggu yawning (not included): head raised and rolled, eyes squeezed shut, jaw dropped wide with the tongue showing. The jaw opens over about 0.8 s, holds, and closes in about 0.45 s; these timings are artistic choices.",
+    "sleep": "From owner's photos of Bonggu asleep (not included): flat on one side and curled, legs stretched out along the floor toward each other, head resting low, the plume wrapped behind the rump. From the sphinx pose the eyelids droop, the trunk rolls about 85 degrees onto the right side while the folded legs slide out, then the trunk bends into a C. Sleeping breath is 4 s (15 a minute), deeper than the resting breath, with a slight lip puff on each exhale.",
+    "held": "Held up under the forelegs, as when a person lifts a small dog by the armpits: the trunk hangs nearly upright below the hands, the forelegs are pushed forward, the hind legs and tail hang. The body sways gently about the hands (1.5 s swing, 6 s drift) and the legs trail the body by 0.1 to 0.25 s. Artistic choices."
   },
   "sources": [
     {
@@ -84,7 +87,8 @@
         "Idle",
         "SitIdle",
         "LieIdle",
-        "TailLowIdle"
+        "TailLowIdle",
+        "SleepIdle"
       ],
       "observation": "Mean resting rate 19 breaths a minute, sleeping 13 to 15."
     },

@@ -45,6 +45,7 @@ manifest['preview']=sequence('everyday-preview',['Idle']+['Walk']*6+['Run']*9+['
 manifest['sit_preview']=sequence('sit-sequence',['SitDown','SitIdle','SitUp'])
 manifest['lie_preview']=sequence('lie-sequence',['LieDown','LieIdle','LieUp'])
 manifest['tail_preview']=sequence('tail-movements',['TailWagSoft','TailWagHappy','TailLower','TailLowIdle','TailRaise'])
+manifest['sleep_preview']=sequence('sleep-sequence',['LieDown','LieIdle','FallAsleep','SleepIdle','WakeUp','LieUp'])
 (out/'clips.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 (out/'preview-checks.json').write_text(json.dumps(report,indent=2)+'\n')
 print('PREVIEWS_PACKAGED')

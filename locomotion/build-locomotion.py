@@ -48,14 +48,19 @@ def rotate(name, x=0, y=0, z=0):
 def reset():
     for pb in rig.pose.bones:
         if not pb.name.startswith(('MCH.Neck.', 'MCH.HeadGaze')): pb.matrix_basis = Matrix.Identity(4)
-    rig['Smile'] = 0.; rig['IK'] = 1.
+    for prop in MORPHS: rig[prop] = 0.
+    rig['IK'] = 1.
 
+MORPHS = ['Smile', 'Yawn', 'EyesClosed']
 BREATH = 3.  # resting dogs breathe about 20 times a minute
+SLEEP_BREATH = 4.  # sleeping dogs about 15 times a minute
 
-def breathe(t, depth):
+def chest(s):
     # Widen the ribcage segment; Chest cancels it so the neck, head and forelegs keep their size.
-    s = 1 + depth*(.5-.5*math.cos(math.tau*t/BREATH))
     rig.pose.bones['Spine.04'].scale = (s, 1, s); rig.pose.bones['Chest'].scale = (1/s, 1, 1/s)
+
+def breathe(t, depth, period=BREATH):
+    chest(1 + depth*(.5-.5*math.cos(math.tau*t/period)))
 
 def glance(t, when, yaw, tilt=0., pitch=0., turn=.22, dwell=1.):
     # Dogs turn the head quickly, then hold and look; they do not sweep like a camera.
@@ -260,6 +265,128 @@ def tail_low_idle(t):
 def tail_raise(t):
     tail(t, lowered=1-ramp(t, 0, 1.2)); rotate('CTRL.Look', x=.06*(1-ramp(t, 0, .9)))
 
+def yawn(t):
+    # The head lifts and rolls, the eyes squeeze shut, and the jaw opens slowly with a deep breath,
+    # holds, then closes quicker than it opened.
+    a = hold(t, .15, .9, 2., 2.7)
+    rotate('CTRL.NeckBase', x=-.10*a); rotate('CTRL.Look', x=-.30*a, z=.16*a)
+    move('CTRL.Body', (0, .004*a, -.003*a))
+    chest(1 + .035*hold(t, .3, 1.2, 1.8, 2.6))
+    rig['Yawn'] = hold(t, .45, 1.25, 1.85, 2.3)
+    rig['EyesClosed'] = hold(t, .35, .8, 2.05, 2.5)
+    tail(t)
+
+# Asleep, Bonggu rolls from the sphinx pose onto the right side, flat on the floor, and curls into a ring:
+# the trunk bends toward the belly, the head comes round toward the hind legs, the legs stretch out along
+# the floor and the plume wraps round behind the hind paws. The legs switch from paw IK to FK as it rolls.
+SLEEP_PIVOT = Vector((0, .04, .125))  # middle of the trunk in the rest pose; it rolls about this line
+LIE_OFFSET = Vector((0, -.006, -.086))  # where lie() puts the body
+SLEEP_CENTRE = Vector((0, .034, .073))  # the trunk middle, lying on its side
+SLEEP_ROLL = math.radians(85)
+SLEEP_LEGS = {  # directions in the upright trunk frame, rolled and curled with the chest or pelvis
+    'Fore': ('Chest', {'Upper': (0, -.3, -.95), 'Lower': (0, -.6, -.8), 'Metacarpus': (0, -.3, -.95), 'Paw': (0, -.2, -.98)}),
+    'Hind': ('Pelvis', {'Upper': (0, -.6, -.8), 'Lower': (0, .3, -.95), 'Hock': (0, -.2, -.98), 'Paw': (0, -.3, -.95)})}
+SLEEP_DROOP = {'L': -.3, 'R': .12}  # the upper legs sag onto the lower ones; the lower ones stay off the floor
+TAIL_WRAP = [(-.2, .9, -.4), (.3, .9, -.3), (.75, .6, -.2), (.95, .1, 0), (.8, -.55, 0), (.45, -.9, 0), (.1, -1, 0), (-.2, -.98, 0)]
+
+def sleep(t, roll, curl):
+    with posing_only(): sleep_pose(t, roll, curl)
+
+def sleep_pose(t, roll, curl):
+    # The paw IK's sphinx legs are copied to FK first, so roll 0 is exactly the lying pose.
+    lie(); bpy.context.view_layer.update()
+    legs = [f'{end}.{bone}.{side}' for end, (_, bones) in SLEEP_LEGS.items() for side in 'LR' for bone in bones]
+    folded = {n: rig.pose.bones[n].matrix.copy() for n in legs}
+    rig['IK'] = 0.
+    for n in legs: bpy.context.view_layer.update(); rig.pose.bones[n].matrix = folded[n]
+    # The trunk lifts a little mid-roll as the weight shifts, so the folded paws slide out above the floor.
+    centre = (SLEEP_PIVOT + LIE_OFFSET).lerp(SLEEP_CENTRE, roll) + Vector((0, 0, .02*math.sin(math.pi*roll)))
+    rig.pose.bones['CTRL.Body'].matrix = (Matrix.Translation(centre) @ Matrix.Rotation(-SLEEP_ROLL*roll, 4, 'Y')
+                                          @ Matrix.Translation(-SLEEP_PIVOT) @ rig.data.bones['CTRL.Body'].matrix_local)
+    for bone in ['Spine.01', 'Spine.02', 'Spine.03', 'Spine.04', 'Chest']: rotate(bone, x=.4*curl)
+    # The head comes round toward the hind legs and rests on its cheek, lifted a little (a left turn, once
+    # rolled) so it lies on the lower ear.
+    rotate('CTRL.NeckBase', x=.35*curl, y=.25*roll); rotate('CTRL.Look', x=.2*curl, y=.5*roll)
+    for end, (parent, bones) in SLEEP_LEGS.items():
+        # The legs take their fully rolled directions as they unfold, so they slide out along the floor.
+        bpy.context.view_layer.update()
+        frame = (Matrix.Rotation(-SLEEP_ROLL*(1-roll), 3, 'Y') @ rig.pose.bones[parent].matrix.to_3x3()
+                 @ rig.data.bones[parent].matrix_local.to_3x3().inverted()).normalized()
+        for side, s in [('L', 1), ('R', -1)]:
+            for bone, (x, y, z) in bones.items(): aim(f'{end}.{bone}.{side}', frame @ Vector((s*x + SLEEP_DROOP[side], y, z)), roll)
+    # The plume drapes as the body rolls; any later and the curl over the back would go through the floor.
+    tail(t, lift=.25); aim_chain([f'Tail.{i:02}' for i in range(1, 9)], TAIL_WRAP, roll)
+
+def fall_asleep(t):
+    # Heavy eyelids droop, open once more, then close as it rolls over and curls up.
+    sleep(t, ramp(t, .9, 2.4), ramp(t, 1.8, 3.4)); breathe(t, .03*(1-ramp(t, 2.5, 3.5)))
+    rig['EyesClosed'] = max(.6*hold(t, .2, .7, .9, 1.3), ramp(t, 1.3, 2.3))
+
+def sleep_idle(t):
+    sleep(t, 1, 1); breathe(t, .045, SLEEP_BREATH)
+    # Slow, deep breaths swell the ribs and lift the upper side, with a soft puff through the lips on each exhale.
+    inhale = .5-.5*math.cos(math.tau*t/SLEEP_BREATH)
+    move('CTRL.Body', (0, 0, .0025*inhale)); rotate('CTRL.Look', x=-.02*inhale)
+    rig['Yawn'] = .05*max(0., -math.sin(math.tau*t/SLEEP_BREATH))**2
+    rig['EyesClosed'] = 1.
+
+def wake_up(t):
+    sleep(t, 1-ramp(t, .6, 1.9), 1-ramp(t, .3, 1.2))
+    rig['EyesClosed'] = 1-ramp(t, .05, .45) + .8*hold(t, 1., 1.1, 1.15, 1.3)
+
+# Held up by the armpits: the rest-pose point between the elbows goes to the hands, and the body hangs below.
+GRIP = Vector((0, -.062, .150)); HELD_GRIP = Vector((0, 0, .42))
+HANG = {  # armature-space directions of the hanging legs before any sway: hind legs loose with soft knees and
+    # drooping paws, forelegs pushed forward and out by the hands under the armpits
+    'Hind.Upper': (0, -.5, -.87), 'Hind.Lower': (0, .25, -.97), 'Hind.Hock': (0, -.1, -1), 'Hind.Paw': (0, -.2, -.98),
+    'Fore.Upper': (.4, -.85, -.35), 'Fore.Lower': (.2, -.75, -.6), 'Fore.Metacarpus': (.05, -.3, -.95), 'Fore.Paw': (0, -.1, -1)}
+TAIL_HANG = [(0, .8, -.6), (0, .5, -.87), (0, .3, -.95), (0, .15, -.99), (0, .1, -.99), (0, .15, -.99), (0, .3, -.95), (0, .45, -.9)]
+
+def aim(name, direction, amount=1.):
+    # FK: turn a bone about its head toward an armature-space direction, all the way at amount 1.
+    if amount <= 0: return
+    bpy.context.view_layer.update()
+    pb = rig.pose.bones[name]; m = pb.matrix.copy()
+    q = Quaternion().slerp(m.to_3x3().normalized().col[1].rotation_difference(Vector(direction).normalized()), amount)
+    pb.matrix = Matrix.Translation(m.translation) @ q.to_matrix().to_4x4() @ Matrix.Translation(-m.translation) @ m
+
+def aim_chain(names, directions, amount):
+    # Aim a whole chain, then blend each bone's local rotation from where it was, so a tip that has to
+    # turn nearly all the way round does not flip about a changing axis.
+    if amount <= 0: return
+    before = {n: rig.pose.bones[n].matrix_basis.to_quaternion() for n in names}
+    for n, d in zip(names, directions): aim(n, d)
+    for n in names:
+        pb = rig.pose.bones[n]
+        pb.rotation_euler = before[n].slerp(pb.matrix_basis.to_quaternion(), amount).to_euler('XYZ', pb.rotation_euler)
+
+class posing_only:
+    # Many bone-by-bone updates: skip skinning the mesh until the pose is done.
+    def __enter__(self): pet.modifiers['Bonggu skin'].show_viewport = False
+    def __exit__(self, *_): pet.modifiers['Bonggu skin'].show_viewport = True
+
+def dangle(t):
+    with posing_only(): dangle_pose(t)
+
+def dangle_pose(t):
+    # Gentle side-to-side swings about the hands; the legs swing after the body like pendulums.
+    sway = lambda u: .08*math.sin(math.tau*u/1.5) + .03*math.sin(math.tau*u/6 + .7)
+    twist = lambda u: .05*math.sin(math.tau*u/3 + 1)
+    rig['IK'] = 0.
+    turn = Matrix.Rotation(twist(t), 4, 'Z') @ Matrix.Rotation(sway(t), 4, 'Y') @ Matrix.Rotation(-1.3, 4, 'X')
+    rig.pose.bones['CTRL.Body'].matrix = Matrix.Translation(HELD_GRIP) @ turn @ Matrix.Translation(-GRIP) @ rig.data.bones['CTRL.Body'].matrix_local
+    breathe(t, .02)
+    # The neck brings the nose near level to look at the person, and steadies the head against the sway.
+    rotate('CTRL.NeckBase', x=.45); rotate('CTRL.Look', x=.75, z=.5*sway(t))
+    glance(t, 2., .25, tilt=.1); glance(t, 4.2, -.2)
+    for side, s in [('L', 1), ('R', -1)]:
+        for end, lag, bones in [('Fore', .1, ['Upper', 'Lower', 'Metacarpus', 'Paw']), ('Hind', .25, ['Upper', 'Lower', 'Hock', 'Paw'])]:
+            swing = Matrix.Rotation(twist(t-lag), 3, 'Z') @ Matrix.Rotation(sway(t-lag), 3, 'Y')
+            for bone in bones:
+                x, y, z = HANG[end+'.'+bone]; aim(f'{end}.{bone}.{side}', swing @ Vector((s*x, y, z)))
+    # The tail hangs with the body; its spring adds the lag.
+    for i, direction in enumerate(TAIL_HANG): aim(f'Tail.{i+1:02}', Matrix.Rotation(sway(t), 3, 'Y') @ Vector(direction))
+
 CLIPS = [  # name, seconds, pose, label, loop, entry, exit, forward speed, smile
     ('Idle', 9., idle, '서서 쉬기', True, 'stand', 'stand', 0., 0.),
     ('Walk', 16/FPS, lambda t: gait(t, 'walk'), '걷기', True, 'walk', 'walk', forward_speed('walk'), 0.),
@@ -279,8 +406,14 @@ CLIPS = [  # name, seconds, pose, label, loop, entry, exit, forward speed, smile
     ('TailLower', 1.4, tail_lower, '꼬리 천천히 내리기', False, 'stand', 'tail-low', 0., 0.),
     ('TailLowIdle', 6., tail_low_idle, '꼬리 내린 채 쉬기', True, 'tail-low', 'tail-low', 0., 0.),
     ('TailRaise', 1.2, tail_raise, '꼬리 다시 올리기', False, 'tail-low', 'stand', 0., 0.),
+    ('Yawn', 3.2, yawn, '하품하기', False, 'stand', 'stand', 0., 0.),
+    ('FallAsleep', 3.6, fall_asleep, '옆으로 누워 몸 말기', False, 'lie', 'sleep', 0., 0.),
+    ('SleepIdle', 8., sleep_idle, '돌돌 말아 새근새근 자기', True, 'sleep', 'sleep', 0., 0.),
+    ('WakeUp', 2., wake_up, '잠에서 깨 엎드리기', False, 'sleep', 'lie', 0., 0.),
+    ('Dangle', 6., dangle, '안겨서 데롱데롱', True, 'held', 'held', 0., 0.),
 ]
-STATE_LOOP = {'stand': 'Idle', 'walk': 'Walk', 'run': 'Run', 'sit': 'SitIdle', 'lie': 'LieIdle', 'tail-low': 'TailLowIdle'}
+STATE_LOOP = {'stand': 'Idle', 'walk': 'Walk', 'run': 'Run', 'sit': 'SitIdle', 'lie': 'LieIdle', 'tail-low': 'TailLowIdle',
+              'sleep': 'SleepIdle', 'held': 'Dangle'}
 
 # Ears and tail lag behind the head and body as damped springs, driven only by body motion
 # so authored tail wags keep their shape. Hz, damping ratio, share per bone, max radians.
@@ -291,7 +424,7 @@ CHAINS = {
 }
 driver_rest = {'Ear.L': 'Head', 'Ear.R': 'Head', 'Tail': 'Pelvis'}
 chain_tip = {k: rig.data.bones[names[-1]].tail_local.copy() for k, (names, *_) in CHAINS.items()}
-DOWN = Vector((0, 0, -1))
+DOWN = Vector((0, 0, -1)); EAR_FLOOR = .035  # lowest ear-tip bone height; the flap reaches a little below it
 # Rest-pose angle between each ear and straight down; long ears keep part of it as the head moves.
 droop = {k: (chain_tip[k] - rig.data.bones[CHAINS[k][0][0]].head_local).angle(DOWN) for k in ('Ear.L', 'Ear.R')}
 
@@ -332,6 +465,8 @@ def apply_secondary(lags):
             # Floppy ears hang: when the head pitches or rolls they undo half of the change in droop.
             hang = a.cross(DOWN)
             if hang.length > 1e-9: lag += Quaternion(hang.normalized(), .5*(a.angle(DOWN) - droop[k])) @ a - a
+            # An ear under the head, as in side-lying sleep, rests on the floor instead of hanging through it.
+            lag.z += max(0., EAR_FLOOR - (root + a + lag).z)
         axis = a.cross(a + lag); s = axis.length
         if s < 1e-12: continue
         angle = min(limit, math.atan2(s, a.dot(a + lag))); axis /= s
@@ -345,15 +480,15 @@ def evaluated():
     bpy.context.view_layer.update()
     return np.array([v.co[:] for v in pet.evaluated_get(bpy.context.evaluated_depsgraph_get()).data.vertices])
 
-def render(name, side=False):
-    target = Vector((0, .015, .15)); cam = scene.camera
-    cam.data.ortho_scale = .52
-    cam.location = target + Vector((1, -.03, .12) if side else (.65, -1, .33))
+def render(name, side=False, top=False):
+    held = 'dangle' in name.lower(); cam = scene.camera
+    target = Vector((0, .015, .30 if held else .15)); cam.data.ortho_scale = .72 if held or top else .52
+    cam.location = target + Vector((0, .2, 1) if top else (1, -.03, .12) if side else (.65, -1, .33))
     cam.rotation_euler = (target-cam.location).to_track_quat('-Z', 'Y').to_euler()
     scene.render.filepath = str(OUT/'frames'/(name+'.png')); bpy.ops.render.render(write_still=True)
 
 base = np.array([v.co[:] for v in pet.data.vertices])
-smile = np.array([v.co[:] for v in pet.data.shape_keys.key_blocks['Smile'].data])
+face_keys = {k: np.array([v.co[:] for v in pet.data.shape_keys.key_blocks[k].data]) for k in MORPHS}
 edges = np.array([e.vertices[:] for e in pet.data.edges])
 def weight(names):
     ids = {pet.vertex_groups[n].index for n in names}
@@ -372,14 +507,21 @@ def ik_error():
 
 if '--probe' in sys.argv:
     probes = [('sit', lambda: sit()), ('lie', lambda: lie()), ('lie-front', lambda: lie(1, 0)), ('bow', lambda: lie(.9, 0)),
-              ('walk', lambda: gait(.1, 'walk')), ('trot', lambda: gait(.1, 'trot'))]
+              ('walk', lambda: gait(.1, 'walk')), ('trot', lambda: gait(.1, 'trot')), ('sleep', lambda: sleep_idle(0)), ('sleep-roll', lambda: sleep(0, .5, 0)), ('sleep-flat', lambda: sleep(0, 1, 0)),
+              ('dangle', lambda: dangle(0)), ('yawn', lambda: yawn(1.5))]
+    # Probe names after --probe render only those poses.
+    only = sys.argv[sys.argv.index('--probe')+1:]
     for name, pose in probes:
-        reset(); pose(); co = evaluated()
+        if only and name not in only: continue
+        reset(); pose(); apply_secondary({k: (0, 0, 0) for k in CHAINS}); co = evaluated()
         lengths = np.linalg.norm(base[edges[:, 0]]-base[edges[:, 1]], axis=1); ok = lengths > .0015
         strain = np.linalg.norm(co[edges[:, 0]]-co[edges[:, 1]], axis=1)[ok]/lengths[ok]
-        print('POSE', name, 'minz %.4f rump %.4f ventral %.4f ik %.6f p99 %.3f max %.3f' % (co[:, 2].min(), co[rump, 2].min(), co[ventral, 2].min(),
+        top = np.array([pet.vertex_groups[max(v.groups, key=lambda g: g.weight).group].name for v in pet.data.vertices])
+        low = top[int(co[:, 2].argmin())]; trunk = np.isin(top, ['Pelvis', 'Spine.01', 'Spine.02', 'Spine.03', 'Spine.04', 'Chest'])
+        print('POSE', name, 'trunk %.4f' % co[trunk, 2].min(), 'minz %.4f (%s) rump %.4f ventral %.4f ik %.6f p99 %.3f max %.3f' % (co[:, 2].min(), low, co[rump, 2].min(), co[ventral, 2].min(),
               ik_error(), np.quantile(strain, .99), strain.max()), flush=True)
         render('probe-'+name); render('probe-'+name+'-side', True)
+        if name.startswith('sleep'): render('probe-'+name+'-top', top=True)
     raise SystemExit
 
 report = {'source_sha256': hashlib.sha256(SOURCE.read_bytes()).hexdigest(), 'clips': {}}
@@ -405,8 +547,8 @@ for name, seconds, pose, label, loop, entry, exit_state, speed, smile_weight in 
     action = bpy.data.actions.new(name); action.use_fake_user = True
     rig.animation_data.action = action
     count = round(seconds*FPS)+1; periodic = name == STATE_LOOP[entry] and entry == exit_state
-    first = None; previous = None
-    check = {'frames': count, 'min_z': 1., 'max_ik_error': 0., 'max_p99_edge_stretch': 1., 'max_frame_displacement': 0.}
+    first = None; previous = None; weights = {k: [] for k in MORPHS[1:]}
+    check ={'frames': count, 'min_z': 1., 'max_ik_error': 0., 'max_p99_edge_stretch': 1., 'max_frame_displacement': 0.}
     for frame in range(1, count+1):
         t = (frame-1)/FPS
         scene.frame_set(frame); reset(); pose(t)
@@ -415,11 +557,12 @@ for name, seconds, pose, label, loop, entry, exit_state, speed, smile_weight in 
         rig['Smile'] = smile_weight*(1 if periodic else hold(t, 0, .25, seconds-.25, seconds))
         co = evaluated(); assert np.isfinite(co).all()
         check['min_z'] = min(check['min_z'], float(co[:, 2].min()))
-        before = base+(smile-base)*rig['Smile']
+        before = base+sum((face_keys[k]-base)*rig[k] for k in MORPHS)
         lengths = np.linalg.norm(before[edges[:, 0]]-before[edges[:, 1]], axis=1)
         strain = np.linalg.norm(co[edges[:, 0]]-co[edges[:, 1]], axis=1)[lengths > .0015]/lengths[lengths > .0015]
         check['max_p99_edge_stretch'] = max(check['max_p99_edge_stretch'], float(np.quantile(strain, .99)))
-        check['max_ik_error'] = max(check['max_ik_error'], ik_error())
+        if rig['IK']: check['max_ik_error'] = max(check['max_ik_error'], ik_error())
+        for k in weights: weights[k].append(round(float(rig[k]), 3))
         if first is None:
             first = co.copy(); check['rump_min_z'] = float(co[rump, 2].min()); check['ventral_min_z'] = float(co[ventral, 2].min())
         if previous is not None: check['max_frame_displacement'] = max(check['max_frame_displacement'], float(np.linalg.norm(co-previous, axis=1).max()))
@@ -427,9 +570,10 @@ for name, seconds, pose, label, loop, entry, exit_state, speed, smile_weight in 
         for pb in rig.pose.bones:
             if pb.name.startswith(('MCH.Neck.', 'MCH.HeadGaze')): continue
             pb.keyframe_insert('location', frame=frame, group=pb.name)
-            pb.keyframe_insert('rotation_euler', frame=frame, group=pb.name)
+            # A few anatomy-rig bones (the metacarpus) rotate in quaternion mode; key whichever the bone uses.
+            pb.keyframe_insert('rotation_quaternion' if pb.rotation_mode == 'QUATERNION' else 'rotation_euler', frame=frame, group=pb.name)
             if pb.name in ('Spine.04', 'Chest'): pb.keyframe_insert('scale', frame=frame, group=pb.name)
-        for prop in ['Smile', 'IK']: rig.keyframe_insert(data_path='["'+prop+'"]', frame=frame)
+        for prop in MORPHS+['IK']: rig.keyframe_insert(data_path='["'+prop+'"]', frame=frame)
     check['endpoint_difference'] = float(np.max(np.abs(first-co)))
     endpoints[name] = (first, co)
     print('CLIP_CHECK', name, json.dumps(check), flush=True)
@@ -440,8 +584,19 @@ for name, seconds, pose, label, loop, entry, exit_state, speed, smile_weight in 
     rig.animation_data.action = None
     track = rig.animation_data.nla_tracks.new(); track.name = name
     strip = track.strips.new(name, 1, action); strip.extrapolation = 'NOTHING'; strip.blend_type = 'REPLACE'; track.mute = True
-    manifest.append({'name': name, 'label': label, 'duration_seconds': seconds, 'loop': loop, 'entry_state': entry, 'exit_state': exit_state,
-                     'forward_speed_mps': speed, 'smile': smile_weight, 'preview': name+'.mp4'})
+    entry_spec = {'name': name, 'label': label, 'duration_seconds': seconds, 'loop': loop, 'entry_state': entry, 'exit_state': exit_state,
+                  'forward_speed_mps': speed, 'smile': smile_weight, 'preview': name+'.mp4'}
+    # Face keys other than Smile follow a curve the app samples by clip time: [seconds, weight] keys at 10 Hz,
+    # linear in between. The native file keys the exact weight every frame.
+    curves = {}
+    for k, values in weights.items():
+        if not any(values): continue
+        frames = sorted(set(range(0, count, 3)) | {count-1})
+        if len(set(values)) == 1: frames = [0, count-1]
+        curves[k] = [[round(f/FPS, 4), values[f]] for f in frames]
+    if curves: entry_spec['morphs'] = curves
+    if name == 'Dangle': entry_spec['grip_point'] = [HELD_GRIP.x, HELD_GRIP.z, -HELD_GRIP.y]  # glTF model space
+    manifest.append(entry_spec)
 
 # Every clip begins on its entry loop's first frame and ends on its exit loop's first frame.
 for name, seconds, pose, label, loop, entry, exit_state, *_ in CLIPS:
@@ -466,7 +621,7 @@ bpy.ops.export_scene.gltf(filepath=str(OUT/'bonggu-v2-everyday.glb'), export_for
     'forward_axis': '-Y in Blender; +Z in glTF', 'units': 'metres', 'root_motion': False, 'morph_animation': False, 'clips': manifest,
     'previous_behaviors': '../animations/bonggu-v2-behaviors.glb', 'locomotion_blend_seconds': .18, 'references': 'references.json',
     'neck_preview': 'neck-movements.mp4', 'preview': 'everyday-preview.mp4', 'sit_preview': 'sit-sequence.mp4',
-    'lie_preview': 'lie-sequence.mp4', 'tail_preview': 'tail-movements.mp4'}, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+    'lie_preview': 'lie-sequence.mp4', 'tail_preview': 'tail-movements.mp4', 'sleep_preview': 'sleep-sequence.mp4'}, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
 print('EXPORTED', flush=True)
 
 if '--preview' in sys.argv:

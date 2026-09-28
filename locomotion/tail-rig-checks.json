@@ -10,6 +10,27 @@
     "6c51bac13cfcf5b44fe59b2bea3a697e282970c549f746a4255af731a1bbbfba",
     "dc1134f24be9d1c0918fddf924b26c9c835fb327a6eee78a364e7c4ee56791b3"
   ],
+  "face_keys": {
+    "Yawn": {
+      "from": "Smile",
+      "jaw_hinge_yz": [
+        -0.1464,
+        0.2462
+      ],
+      "extra_jaw_radians": 0.3
+    },
+    "EyesClosed": {
+      "eye_centre_xz": [
+        0.028,
+        0.2637
+      ],
+      "lid_line_below_centre_m": 0.0088
+    },
+    "changed_vertices": {
+      "Yawn": 4391,
+      "EyesClosed": 418
+    }
+  },
   "limb_coverage": {
     "max_share": 0.7,
     "hind": "capsule around Hind.Upper, 0.025-0.08 m",
