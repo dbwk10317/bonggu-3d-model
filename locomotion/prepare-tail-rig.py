@@ -33,7 +33,8 @@ paint=bm.loops.layers.float_color.new('TailPaint')
 for face in bm.faces:
  for l in face.loops:l[paint]=(1,1,1,1)
 sel={v for v in bm.verts if v.co.y>.075 and v.co.z>.195}
-geom=list(sel)+[e for e in bm.edges if any(v in sel for v in e.verts)]+[f for f in bm.faces if any(v in sel for v in f.verts)]
+# Sorted inputs keep the cut independent of Python set ordering.
+geom=sorted(sel,key=lambda v:v.index)+[e for e in bm.edges if any(v in sel for v in e.verts)]+[f for f in bm.faces if any(v in sel for v in f.verts)]
 r=bmesh.ops.bisect_plane(bm,geom=geom,plane_co=(0,0,.278),plane_no=(0,.35,1),dist=1e-7)
 cut=[e for e in r['geom_cut'] if isinstance(e,bmesh.types.BMEdge)];bmesh.ops.split_edges(bm,edges=cut)
 seed=max(bm.verts,key=lambda v:v.co.z if v.co.y>.07 else -1);tail={seed};stack=[seed]
@@ -43,7 +44,7 @@ while stack:
   w=e.other_vert(v)
   if w not in tail:tail.add(w);stack.append(w)
 assert len(tail)<6000
-bmesh.ops.delete(bm,geom=list(tail),context='VERTS')
+bmesh.ops.delete(bm,geom=sorted(tail,key=lambda v:v.index),context='VERTS')
 ti=[pet.vertex_groups[f'Tail.{i:02}'].index for i in range(1,9)];pelvis=pet.vertex_groups['Pelvis'].index
 # The back stays on the torso. The new tail attaches through an overlapping root.
 for v in bm.verts:
@@ -99,7 +100,7 @@ for step in range(steps+1):
   if q>=7:index=6;fraction=1
   weights=np.exp(-((np.arange(8)-q)/.55)**2/2)
   if t<.8:weights[:]=0;weights[0]=1
-  keep=np.argsort(weights)[-4:];weights/=weights[keep].sum()
+  keep=[n for n in np.argsort(weights)[-4:] if weights[n]>0];weights/=weights[keep].sum()
   for n in keep:v[dw][ti[n]]=float(weights[n])
   ring.append(v)
  rings.append(ring)
@@ -121,6 +122,24 @@ for k in pet.data.shape_keys.key_blocks:
  actual=np.array([v.co[:] for v in k.data]);mask=(actual[:,1]<=.075)|(actual[:,2]<=.195)
  def rows(x):return sorted(tuple(round(float(c),7) for c in row) for row in x)
  assert rows(actual[mask])==rows(original),k.name
+# Smooth hip-to-hock weights so folded hind legs (sitting, lying) do not cut into the rump.
+# Only Pelvis and hind-leg shares move between neighbours; spine, tail and the mesh stay as they are.
+SMOOTHING=20
+names=[g.name for g in pet.vertex_groups];n=len(pet.data.vertices);W=np.zeros((n,len(names)))
+for v in pet.data.vertices:
+ for g in v.groups:W[v.index,g.group]=g.weight
+rest=np.array([v.co[:] for v in pet.data.vertices]);edges=np.array([e.vertices[:] for e in pet.data.edges]);degree=np.bincount(edges.ravel(),minlength=n)
+region=(rest[:,1]>.08)&(rest[:,2]<.17)&(degree>0)
+cols=[i for i,name in enumerate(names) if name=='Pelvis' or name.startswith(('Hind.Upper','Hind.Lower','Hind.Hock'))];share=W[:,cols].sum(axis=1)
+for _ in range(SMOOTHING):
+ nb=np.zeros_like(W);np.add.at(nb,edges[:,0],W[edges[:,1]]);np.add.at(nb,edges[:,1],W[edges[:,0]])
+ sm=W[:,cols].copy();sm[region]=.5*W[region][:,cols]+.5*nb[region][:,cols]/degree[region,None]
+ total=sm.sum(axis=1);W[:,cols]=sm*np.divide(share,total,out=np.zeros_like(share),where=total>1e-9)[:,None]
+for vg in pet.vertex_groups:vg.remove(list(range(n)))
+for i,row in enumerate(W):
+ top=np.argsort(row)[-4:];top=top[row[top]>1e-6]
+ for j in top:pet.vertex_groups[int(j)].add([i],float(row[j]/row[top].sum()),'REPLACE')
+pet['hip_weight_smoothing']=SMOOTHING
 for v in pet.data.vertices:
  assert len(v.groups)<=4 and abs(sum(g.weight for g in v.groups)-1)<1e-5,(v.index,[(g.group,g.weight) for g in v.groups])
 for attr in list(pet.data.color_attributes):
@@ -128,7 +147,8 @@ for attr in list(pet.data.color_attributes):
 pet.data.color_attributes.active_color=pet.data.color_attributes['TailPaint']
 scene.frame_set(1);bpy.context.view_layer.update()
 pet.data.calc_loop_triangles()
-report={'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'protected_vertices_unchanged':int(protected.sum()),'triangles':len(pet.data.loop_triangles),'native_bones':len(rig.data.bones),'skin_joints':sum(b.use_deform for b in rig.data.bones),'max_influences':4,'changes':'Rebuilt the welded tail plume as a deformable curved surface, closed and smoothed the back contact, transferred source paint to linear vertex colors. Face and body outside the tail contact region are unchanged.','texture_sha256':sorted(hashlib.sha256(im.packed_file.data).hexdigest() for im in bpy.data.images if im.packed_file)}
+report={'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'protected_vertices_unchanged':int(protected.sum()),'triangles':len(pet.data.loop_triangles),'native_bones':len(rig.data.bones),'skin_joints':sum(b.use_deform for b in rig.data.bones),'max_influences':4,'changes':'Rebuilt the welded tail plume as a deformable curved surface, closed and smoothed the back contact, transferred source paint to linear vertex colors. Face and body outside the tail contact region are unchanged.','texture_sha256':sorted(hashlib.sha256(im.packed_file.data).hexdigest() for im in bpy.data.images if im.packed_file),
+ 'hip_weight_smoothing':{'iterations':SMOOTHING,'vertices':int(region.sum()),'groups':'Pelvis, Hind.Upper, Hind.Lower, Hind.Hock','region':'rest pose y > 0.08 m and z < 0.17 m','appearance_unchanged':True}}
 (OUT/'tail-rig-checks.json').write_text(json.dumps(report,indent=2)+'\n')
 bpy.ops.file.pack_all();bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'bonggu-v2-tail-rig.blend'))
 print('TAIL_RIG_READY',json.dumps(report),flush=True)

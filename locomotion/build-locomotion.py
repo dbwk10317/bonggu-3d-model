@@ -96,10 +96,11 @@ def sit(hip=1., leg=1., front=1.):
     rotate('Spine.02', x=-.05*front)
     rotate('CTRL.Look', x=.55*hip)
     for side, sign in [('L', 1), ('R', -1)]:
-        # Paws forward and slightly out keep the folded hock beside the thigh rather than inside it.
-        move('CTRL.HindPaw.'+side, (sign*.024*leg, -.072*leg, 0))
+        # Hind paws a little out to the side, as Shih Tzus often sit, keep the folded hock beside
+        # the thigh instead of inside the rump (prepare-tail-rig.py also smooths the hip skin).
+        move('CTRL.HindPaw.'+side, (sign*.048*leg, -.056*leg, 0))
         move('CTRL.HindPole.'+side, (sign*.025*leg, -.035*leg, -.025*leg))
-        rotate('CTRL.Hock.'+side, x=-.95*leg)
+        rotate('CTRL.Hock.'+side, x=-1.15*leg)
         move('CTRL.ForePaw.'+side, (0, .012*front, 0))
 
 def lie(front=1., rear=1.):
@@ -174,7 +175,7 @@ def sit_idle(t):
     sit(); breathe(t, .022)
     glance(t, .9, -.25, tilt=-.15)
     glance(t, 3.4, .18)
-    tail(t, .025*sway(t, 6), .5, lift=.30)
+    tail(t, .025*sway(t, 6), .5, lift=.24)
 
 def lie_idle(t):
     lie(); breathe(t, .03)
@@ -185,13 +186,13 @@ def lie_idle(t):
 def sit_down(t):
     hip = ramp(t, 0, .7); sit(hip, ramp(t, .12, .85), ramp(t, .25, .95))
     move('CTRL.Body', (0, 0, settle(t, .7, 1.2, -.003)))
-    tail(t, lift=.30*hip)
+    tail(t, lift=.24*hip)
 
 def sit_up(t):
     lean = hold(t, 0, .15, .3, .6)
     move('CTRL.Body', (0, -.006*lean, 0)); rotate('CTRL.Look', x=.05*lean)
     hip = 1-ramp(t, .1, .65); sit(hip, 1-ramp(t, .18, .8), 1-ramp(t, .05, .6))
-    tail(t, lift=.30*hip)
+    tail(t, lift=.24*hip)
 
 def lie_down(t):
     nose = hold(t, 0, .3, .65, 1.15)

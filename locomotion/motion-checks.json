@@ -1,5 +1,5 @@
 {
-  "source_sha256": "cbe924177338f2c83550fbab0f1aa8ecfe2087e19ba13a085ed906b8a0f4de70",
+  "source_sha256": "42144b8b436b8ef58b2cf8795d56f06d3608174370f60e87bfd35a51b6a4c637",
   "clips": {
     "Idle": {
       "frames": 271,
@@ -7,7 +7,7 @@
       "max_ik_error": 7.078051567077637e-08,
       "max_p99_edge_stretch": 1.237004804089263,
       "max_frame_displacement": 0.008342051919207914,
-      "rump_min_z": 0.11096596717834473,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 3.6739392342665235e-19
     },
@@ -15,9 +15,9 @@
       "frames": 17,
       "min_z": 0.0022082568611949682,
       "max_ik_error": 6.757064591056501e-08,
-      "max_p99_edge_stretch": 1.3400642795033064,
-      "max_frame_displacement": 0.034309383248457455,
-      "rump_min_z": 0.10130327194929123,
+      "max_p99_edge_stretch": 1.325356600223372,
+      "max_frame_displacement": 0.0343093705459252,
+      "rump_min_z": 0.1014120802283287,
       "ventral_min_z": 0.07326048612594604,
       "endpoint_difference": 0.0
     },
@@ -25,49 +25,49 @@
       "frames": 11,
       "min_z": 0.0022082538343966007,
       "max_ik_error": 6.92192620637344e-08,
-      "max_p99_edge_stretch": 1.4585339910560524,
-      "max_frame_displacement": 0.04083142098404144,
-      "rump_min_z": 0.09962332993745804,
+      "max_p99_edge_stretch": 1.4275818717035333,
+      "max_frame_displacement": 0.04083144244378547,
+      "rump_min_z": 0.09958399832248688,
       "ventral_min_z": 0.06772357225418091,
       "endpoint_difference": 1.1102230246251565e-16
     },
     "SitDown": {
       "frames": 37,
-      "min_z": 0.0014285668730735779,
-      "max_ik_error": 1.0476745645932523e-06,
-      "max_p99_edge_stretch": 1.8026513580951107,
-      "max_frame_displacement": 0.010485493619560107,
-      "rump_min_z": 0.11096596717834473,
+      "min_z": 0.0009336918592453003,
+      "max_ik_error": 7.82310962677002e-08,
+      "max_p99_edge_stretch": 1.7964702509963153,
+      "max_frame_displacement": 0.01070776333598893,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
-      "endpoint_difference": 0.1410389095544815
+      "endpoint_difference": 0.14435917139053345
     },
     "SitIdle": {
       "frames": 181,
-      "min_z": 0.002207942772656679,
-      "max_ik_error": 6.174998767672023e-07,
-      "max_p99_edge_stretch": 1.7774036146112144,
+      "min_z": 0.002208283869549632,
+      "max_ik_error": 5.550557533558957e-08,
+      "max_p99_edge_stretch": 1.807197795713515,
       "max_frame_displacement": 0.0069492982164512706,
-      "rump_min_z": 0.0035625025629997253,
-      "ventral_min_z": 0.026498377323150635,
+      "rump_min_z": 0.0025789588689804077,
+      "ventral_min_z": 0.02639484405517578,
       "endpoint_difference": 0.0
     },
     "SitUp": {
       "frames": 28,
-      "min_z": 0.002207942772656679,
-      "max_ik_error": 6.174998767672023e-07,
-      "max_p99_edge_stretch": 1.799523968371596,
-      "max_frame_displacement": 0.012896444638526175,
-      "rump_min_z": 0.0035625025629997253,
-      "ventral_min_z": 0.026498377323150635,
-      "endpoint_difference": 0.1410389095544815
+      "min_z": 0.002208242891356349,
+      "max_ik_error": 6.188917057900187e-08,
+      "max_p99_edge_stretch": 1.8131571155266617,
+      "max_frame_displacement": 0.013167738148215896,
+      "rump_min_z": 0.0025789588689804077,
+      "ventral_min_z": 0.02639484405517578,
+      "endpoint_difference": 0.14435917139053345
     },
     "LieDown": {
       "frames": 43,
       "min_z": -0.0012913718819618225,
       "max_ik_error": 1.803979279518612e-07,
-      "max_p99_edge_stretch": 1.600257883080569,
+      "max_p99_edge_stretch": 1.5088994631253347,
       "max_frame_displacement": 0.011468284084236585,
-      "rump_min_z": 0.11096596717834473,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 0.10716426372528076
     },
@@ -75,9 +75,9 @@
       "frames": 181,
       "min_z": -0.000849306583404541,
       "max_ik_error": 1.8633900583386124e-07,
-      "max_p99_edge_stretch": 1.6717733408315592,
+      "max_p99_edge_stretch": 1.5814860732111644,
       "max_frame_displacement": 0.009813445733152033,
-      "rump_min_z": 0.026704080402851105,
+      "rump_min_z": 0.027237966656684875,
       "ventral_min_z": 0.0015035048127174377,
       "endpoint_difference": 0.0
     },
@@ -85,9 +85,9 @@
       "frames": 37,
       "min_z": 6.589293479919434e-05,
       "max_ik_error": 1.8723058511509094e-07,
-      "max_p99_edge_stretch": 1.5902136148670918,
+      "max_p99_edge_stretch": 1.5003921040488655,
       "max_frame_displacement": 0.010001203072168481,
-      "rump_min_z": 0.026704080402851105,
+      "rump_min_z": 0.027237966656684875,
       "ventral_min_z": 0.0015035048127174377,
       "endpoint_difference": 0.10716426372528076
     },
@@ -95,9 +95,9 @@
       "frames": 91,
       "min_z": 0.002208218676969409,
       "max_ik_error": 1.2134386207835622e-07,
-      "max_p99_edge_stretch": 1.3146029256760279,
+      "max_p99_edge_stretch": 1.3047903487890216,
       "max_frame_displacement": 0.03350501433273715,
-      "rump_min_z": 0.11096596717834473,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 0.0
     },
@@ -107,7 +107,7 @@
       "max_ik_error": 4.470348358154297e-08,
       "max_p99_edge_stretch": 1.472983746481907,
       "max_frame_displacement": 0.01593860976780731,
-      "rump_min_z": 0.11096596717834473,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 2.9290589567594593e-19
     },
@@ -117,7 +117,7 @@
       "max_ik_error": 4.280032699210963e-08,
       "max_p99_edge_stretch": 1.5389503606095598,
       "max_frame_displacement": 0.010570974199968516,
-      "rump_min_z": 0.11096596717834473,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 0.0
     },
@@ -127,7 +127,7 @@
       "max_ik_error": 5.8902011442340524e-08,
       "max_p99_edge_stretch": 1.2614926157450903,
       "max_frame_displacement": 0.010546146967896776,
-      "rump_min_z": 0.11096596717834473,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 0.0
     },
@@ -137,7 +137,7 @@
       "max_ik_error": 6.376669842237119e-08,
       "max_p99_edge_stretch": 1.034954405237789,
       "max_frame_displacement": 0.015203461221693096,
-      "rump_min_z": 0.11096596717834473,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 0.0
     },
@@ -147,7 +147,7 @@
       "max_ik_error": 7.375698489406456e-08,
       "max_p99_edge_stretch": 1.1131312300226772,
       "max_frame_displacement": 0.04117371617263733,
-      "rump_min_z": 0.11096596717834473,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 0.0
     },
@@ -156,8 +156,8 @@
       "min_z": 0.0022082708310335875,
       "max_ik_error": 2.414264045062609e-08,
       "max_p99_edge_stretch": 1.3057891894247577,
-      "max_frame_displacement": 0.012674985686756582,
-      "rump_min_z": 0.11096596717834473,
+      "max_frame_displacement": 0.0126749851047839,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 0.24137115478515625
     },
@@ -167,7 +167,7 @@
       "max_ik_error": 3.454692101290712e-08,
       "max_p99_edge_stretch": 1.3720277802615743,
       "max_frame_displacement": 0.005627855090390335,
-      "rump_min_z": 0.11096596717834473,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 0.0
     },
@@ -177,7 +177,7 @@
       "max_ik_error": 2.414264045062609e-08,
       "max_p99_edge_stretch": 1.305755203422805,
       "max_frame_displacement": 0.014780772869163503,
-      "rump_min_z": 0.11096596717834473,
+      "rump_min_z": 0.11096597462892532,
       "ventral_min_z": 0.08469894528388977,
       "endpoint_difference": 0.24137115478515625
     }

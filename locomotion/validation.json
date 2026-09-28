@@ -7,7 +7,7 @@
   "triangles": 36968,
   "max_texture_size": 2048,
   "morph_animation": false,
-  "bytes": 6060244,
+  "bytes": 6061148,
   "clips": {
     "Idle": {
       "duration": 9.0,
@@ -123,7 +123,7 @@
   "reimport_render_max_error": 0.0,
   "approved_release_unchanged": true,
   "sha256": {
-    "bonggu-v2-everyday.blend": "f4608a177df6dc82feb2ae58231b5a9f85b6308f76968afd72f81ca0f0cd44dd",
-    "bonggu-v2-everyday.glb": "5eb3b12b269345e4ebc5f23b5118c6710bbd1c416910631ee04c38e4f5d6fed9"
+    "bonggu-v2-everyday.blend": "427af05fb4592cf0a6938d9334a30b2e9f5591fe6c619e3a6d59f9d3f54d8ac1",
+    "bonggu-v2-everyday.glb": "003f552922d59459bc2fd07e29a3c0548da3718390d0c0b24430dba96346115e"
   }
 }

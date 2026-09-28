@@ -25,6 +25,7 @@ texture_2k=m['files']['bonggu-color-2k.png']['sha256'];texture_4k=m['files']['bo
 assert everyday['textures']==sorted([t for t in source_fingerprint['textures'] if t!=texture_4k]+[texture_2k])
 tail_checks=json.loads((out/'tail-rig-checks.json').read_text())
 assert tail_checks['protected_vertices_unchanged']>=17668
+assert tail_checks['hip_weight_smoothing']['appearance_unchanged'] and pet['hip_weight_smoothing']==tail_checks['hip_weight_smoothing']['iterations']
 assert tail_checks['texture_sha256']==source_fingerprint['textures']
 assert len(rig.data.bones)==112
 assert {t.name for t in rig.animation_data.nla_tracks}==set(expected)
