@@ -59,8 +59,13 @@ def breathe(t, depth):
 
 def glance(t, when, yaw, tilt=0., pitch=0., turn=.22, dwell=1.):
     # Dogs turn the head quickly, then hold and look; they do not sweep like a camera.
+    # The head also tilts a little toward the side it turns to.
     a = hold(t, when, when+turn, when+turn+dwell, when+2*turn+dwell+.1)
-    rotate('CTRL.Look', x=pitch*a, y=yaw*a, z=tilt*a); rotate('CTRL.NeckBase', y=.2*yaw*a)
+    rotate('CTRL.Look', x=pitch*a, y=yaw*a, z=(tilt-.3*yaw)*a); rotate('CTRL.NeckBase', y=.2*yaw*a)
+
+def head_shake(t, when, amount=.10):
+    # A short fidget: a few fast head rolls that the ears exaggerate through their springs.
+    rotate('CTRL.Look', z=amount*math.sin(math.tau*4.5*(t-when))*hold(t, when, when+.1, when+.55, when+.9))
 
 def sway(t, seconds):
     # Swells and fades over a loop; zero with zero slope at its start.
@@ -77,8 +82,8 @@ def tail(t, amount=0., frequency=1., lowered=0., lift=0.):
     parent = rig.pose.bones['Pelvis'].matrix.to_quaternion()
     body_delta = parent @ rig.data.bones['Pelvis'].matrix_local.to_quaternion().inverted() @ Quaternion((1,0,0), lift)
     for j, (name, rest) in enumerate(tail_rest.items()):
-        # A traveling delay lets the tip follow the root without twisting the curl.
-        angle = amount*(1+.12*j/7)*math.sin(math.tau*frequency*t-.18*j)
+        # The tip lags the root and swings wider, like a whip, without twisting the curl.
+        angle = amount*(1+.5*j/7)*math.sin(math.tau*frequency*t-.24*j)
         target = body_delta @ Quaternion((0,1,0), angle) @ rest.slerp(tail_low[name], lowered)
         local_rest = rig.data.bones[name].parent.matrix_local.to_quaternion().inverted() @ rest
         rig.pose.bones[name].rotation_euler = ((parent @ local_rest).inverted() @ target).to_euler('XYZ')
@@ -125,15 +130,18 @@ def gait(t, kind):
     period, duty, span, lift, height, offsets = GAITS[kind]; trot = kind == 'trot'
     phase = t/period
     # Level topline: a small dip at each mid-stance, twice per stride.
-    move('CTRL.Body', (0, 0, height - (.0025 if trot else .0012)*math.cos(2*math.tau*(phase - duty/2))))
+    move('CTRL.Body', (0, 0, height - (.0025 if trot else .0018)*math.cos(2*math.tau*(phase - duty/2))))
     # Pelvis and shoulders roll and yaw with their limb pair, in opposition.
     hind = math.sin(math.tau*(phase + offsets['Hind.L'])); fore = math.sin(math.tau*(phase + offsets['Fore.L']))
-    rotate('Pelvis', y=(.012 if trot else .028)*hind, z=(.02 if trot else .035)*hind)
-    rotate('Chest', z=-(.015 if trot else .03)*fore)
-    rotate('Spine.02', x=(.012 if trot else .004)*math.cos(2*math.tau*phase))
-    # Naturally high head carriage with a small nod after each forefoot strike.
+    roll, hip_yaw, chest_yaw = (.012, .02, .015) if trot else (.035, .045, .045)
+    rotate('Pelvis', y=roll*hind, z=hip_yaw*hind)
+    rotate('Chest', z=-chest_yaw*fore)
+    rotate('Spine.02', x=(.012 if trot else .008)*math.cos(2*math.tau*phase))
+    # Naturally high head carriage with a small nod after each forefoot strike. The neck cancels
+    # most of the trunk's yaw and roll, as quadrupeds steady the head while moving.
     rotate('CTRL.NeckBase', x=-.05)
-    rotate('CTRL.Look', x=-.03 + (.02 if trot else .012)*math.cos(2*math.tau*(phase - duty/2 - .08)), y=.012*fore)
+    rotate('CTRL.Look', x=-.03 + (.02 if trot else .012)*math.cos(2*math.tau*(phase - duty/2 - .08)),
+           y=.8*(hip_yaw*hind - chest_yaw*fore), z=-.8*roll*hind)
     for leg, offset in offsets.items():
         u = (phase + offset) % 1
         if u < duty:
@@ -142,29 +150,35 @@ def gait(t, kind):
         else:
             v = (u-duty)/(1-duty)
             travel = span*(.5 - smooth(v)); up = lift*math.sin(math.pi*v**.75)**2
-            toeoff = 1 - smooth(v/.2); fold = math.sin(math.pi*min(1., v*1.15))**2
+            # The carpus folds right after lift-off and opens again before touchdown.
+            toeoff = 1 - smooth(v/.2); fold = math.sin(math.pi*min(1., v*(1.4 if leg[0] == 'F' else 1.15)))**2
         end, side = leg.split('.')
         move(f'CTRL.{end}Paw.{side}', (0, travel, up))
         rotate(f'CTRL.{end}ToeRoll.{side}', x=(.25 if trot else .15)*toeoff)
-        rotate(f'CTRL.{"Carpus" if end == "Fore" else "Hock"}.{side}', x=-(.5 if end == 'Fore' else .32)*fold)
-    tail(t, .05 if trot else .04, 1/period)
+        rotate(f'CTRL.{"Carpus" if end == "Fore" else "Hock"}.{side}', x=-(.5 if end == 'Fore' else .40)*fold)
+        if end == 'Fore':
+            # No clavicle: the scapula swings with the leg, forward at touchdown and back at lift-off.
+            rotate(f'Scapula.{side}', x=(.22 if trot else .18)*2*travel/span)
+    # The plume sways side to side once per stride.
+    tail(t, .07 if trot else .08, 1/period)
 
 def idle(t):
-    breathe(t, .02)
-    move('CTRL.Body', (.0015*math.sin(math.tau*t/6), 0, 0))
-    glance(t, 1.1, .30, tilt=.04)
+    # 9 s: three breaths with a slight settle of the body, two glances, a weight shift and a head shake.
+    breathe(t, .02); move('CTRL.Body', (.0015*math.sin(math.tau*t/9), 0, -.0012*(.5-.5*math.cos(math.tau*t/BREATH))))
+    glance(t, 1.1, .30, tilt=.15)
     glance(t, 3.7, -.20, pitch=.05)
-    tail(t, .03*sway(t, 6), .5)
+    head_shake(t, 6.3)
+    tail(t, .03*sway(t, 9), .5)
 
 def sit_idle(t):
     sit(); breathe(t, .022)
-    glance(t, .9, -.25, tilt=-.05)
+    glance(t, .9, -.25, tilt=-.15)
     glance(t, 3.4, .18)
     tail(t, .025*sway(t, 6), .5, lift=.30)
 
 def lie_idle(t):
     lie(); breathe(t, .03)
-    glance(t, 1.3, .35, tilt=.06)
+    glance(t, 1.3, .35, tilt=.20)
     glance(t, 3.9, -.15, pitch=-.08)
     tail(t, .02*sway(t, 6), .5, lift=.25)
 
@@ -199,8 +213,9 @@ def play_bow(t):
 
 def look_around(t):
     yaw = .55*ramp(t, .3, .6) - 1.0*ramp(t, 1.65, 2.05) + .45*ramp(t, 3.2, 3.55)
-    tilt = .06*hold(t, .55, .8, 1.4, 1.65) - .05*hold(t, 2.1, 2.35, 2.9, 3.15)
-    rotate('CTRL.Look', x=.015*math.sin(math.tau*1.1*t)*hold(t, .3, .6, 3.2, 3.55), y=yaw, z=tilt)
+    # A curious head tilt of about 20 degrees, held for a moment.
+    tilt = .30*hold(t, .55, .8, 1.4, 1.65) - .12*hold(t, 2.1, 2.35, 2.9, 3.15)
+    rotate('CTRL.Look', x=.015*math.sin(math.tau*1.1*t)*hold(t, .3, .6, 3.2, 3.55), y=yaw, z=tilt-.3*yaw)
     rotate('CTRL.NeckBase', y=.15*yaw)
     move('CTRL.Body', (.002*yaw, 0, 0))
 
@@ -222,14 +237,14 @@ def look_up(t):
 
 def tail_wag_soft(t):
     env = hold(t, 0, .35, 3.6, 4.)
-    tail(t, .22*env, 2.25)
+    tail(t, .20*env, 2.25)
     rotate('Pelvis', z=-.012*math.sin(math.tau*2.25*t)*env)
     rotate('CTRL.Look', z=.03*hold(t, .8, 1.1, 2.8, 3.1))
 
 def tail_wag_happy(t):
     # A greeting wags the whole rear, with the head a little lowered.
     env = hold(t, 0, .25, 2.9, 3.2); wag = math.sin(math.tau*3.5*t)*env
-    tail(t, .38*env, 3.5)
+    tail(t, .32*env, 3.5)
     rotate('Pelvis', z=-.035*wag); move('CTRL.Body', (.0015*wag, 0, 0))
     rotate('CTRL.Look', x=.08*env)
 
@@ -245,7 +260,7 @@ def tail_raise(t):
     tail(t, lowered=1-ramp(t, 0, 1.2)); rotate('CTRL.Look', x=.06*(1-ramp(t, 0, .9)))
 
 CLIPS = [  # name, seconds, pose, label, loop, entry, exit, forward speed, smile
-    ('Idle', 6., idle, '서서 쉬기', True, 'stand', 'stand', 0., 0.),
+    ('Idle', 9., idle, '서서 쉬기', True, 'stand', 'stand', 0., 0.),
     ('Walk', 16/FPS, lambda t: gait(t, 'walk'), '걷기', True, 'walk', 'walk', forward_speed('walk'), 0.),
     ('Run', 10/FPS, lambda t: gait(t, 'trot'), '가볍게 달리기', True, 'run', 'run', forward_speed('trot'), .32),
     ('SitDown', 1.2, sit_down, '앉기', False, 'stand', 'sit', 0., 0.),
@@ -269,12 +284,15 @@ STATE_LOOP = {'stand': 'Idle', 'walk': 'Walk', 'run': 'Run', 'sit': 'SitIdle', '
 # Ears and tail lag behind the head and body as damped springs, driven only by body motion
 # so authored tail wags keep their shape. Hz, damping ratio, share per bone, max radians.
 CHAINS = {
-    'Ear.L': ([f'Ear.{i:02}.L' for i in range(1, 5)], 3.0, .2, [.4, .3, .2, .1], .45),
-    'Ear.R': ([f'Ear.{i:02}.R' for i in range(1, 5)], 3.0, .2, [.4, .3, .2, .1], .45),
+    'Ear.L': ([f'Ear.{i:02}.L' for i in range(1, 5)], 3.0, .2, [.4, .3, .2, .1], .6),
+    'Ear.R': ([f'Ear.{i:02}.R' for i in range(1, 5)], 3.0, .2, [.4, .3, .2, .1], .6),
     'Tail': ([f'Tail.{i:02}' for i in range(1, 9)], 3.5, .3, [.2, .18, .15, .13, .11, .09, .08, .06], .3),
 }
 driver_rest = {'Ear.L': 'Head', 'Ear.R': 'Head', 'Tail': 'Pelvis'}
 chain_tip = {k: rig.data.bones[names[-1]].tail_local.copy() for k, (names, *_) in CHAINS.items()}
+DOWN = Vector((0, 0, -1))
+# Rest-pose angle between each ear and straight down; long ears keep part of it as the head moves.
+droop = {k: (chain_tip[k] - rig.data.bones[CHAINS[k][0][0]].head_local).angle(DOWN) for k in ('Ear.L', 'Ear.R')}
 
 def rigid_tips(pose, count):
     tips = {k: np.zeros((count, 3)) for k in CHAINS}
@@ -308,10 +326,14 @@ def spring(x, hz, zeta, periodic, start):
 def apply_secondary(lags):
     bpy.context.view_layer.update()
     for k, (names, hz, zeta, share, limit) in CHAINS.items():
-        root = rig.pose.bones[names[0]].head; a = rig.pose.bones[names[-1]].tail - root
-        axis = a.cross(a + Vector(lags[k])); s = axis.length
+        root = rig.pose.bones[names[0]].head; a = rig.pose.bones[names[-1]].tail - root; lag = Vector(lags[k])
+        if k in droop:
+            # Floppy ears hang: when the head pitches or rolls they undo half of the change in droop.
+            hang = a.cross(DOWN)
+            if hang.length > 1e-9: lag += Quaternion(hang.normalized(), .5*(a.angle(DOWN) - droop[k])) @ a - a
+        axis = a.cross(a + lag); s = axis.length
         if s < 1e-12: continue
-        angle = min(limit, math.atan2(s, a.dot(a + Vector(lags[k])))); axis /= s
+        angle = min(limit, math.atan2(s, a.dot(a + lag))); axis /= s
         # Every bone turns about the same armature axis, so pre-offset matrices stay valid.
         for name, part in zip(names, share):
             pb = rig.pose.bones[name]
@@ -428,7 +450,7 @@ for name, seconds, pose, label, loop, entry, exit_state, *_ in CLIPS:
 report['transition_endpoints_match'] = True
 assert report['clips']['SitIdle']['rump_min_z'] < .004, report['clips']['SitIdle']
 assert report['clips']['LieIdle']['ventral_min_z'] < .004, report['clips']['LieIdle']
-scene.name = 'BongguEveryday'; scene.frame_start = 1; scene.frame_end = round(6*FPS)+1
+scene.name = 'BongguEveryday'; scene.frame_start = 1; scene.frame_end = round(9*FPS)+1
 for track in rig.animation_data.nla_tracks: track.mute = track.name != 'Idle'
 scene.frame_set(1)
 bpy.ops.object.select_all(action='DESELECT'); rig.select_set(True); pet.select_set(True); bpy.context.view_layer.objects.active = rig

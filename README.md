@@ -5,7 +5,7 @@ Blender 원본, GLB, 리그와 동작을 담고 있습니다. 데스크톱 앱 �
 
 ![승인된 봉구의 정적 외형](release/bonggu-v2-preview.png)
 
-**[전체 행동 프리뷰 보기 · 1분 13초](previews/bonggu-actions-preview.mp4)**
+**[전체 행동 프리뷰 보기 · 1분 16초](previews/bonggu-actions-preview.mp4)**
 
 최신 18개 동작과 이전 리그의 앞발 긁기·냄새 찾기·하울링까지 21개 샘플을 이어 붙였습니다.
 영상에 동작 이름과 리그 구분을 표시하며, 걷기·달리기는 반복해서 보여줍니다. 소리는 없습니다.
@@ -28,6 +28,10 @@ Blender 편집 리그는 조작·보조 본을 포함해 112개 본입니다. �
 동작의 타이밍과 순서는 시츄 영상과 개 보행·행동 연구를 근거로 정했습니다([references.json](locomotion/references.json)).
 걷기는 한 주기 0.53초의 측대보, 달리기는 0.33초의 트롯이고, 앉기·엎드리기는 부위별로 순서를 두어 움직입니다.
 귀와 꼬리는 머리·몸의 움직임을 늦게 따라가는 스프링으로 흔들리고, 쉬는 동작에는 호흡이 들어 있습니다.
+걸을 때는 견갑골이 앞다리와 함께 앞뒤로 움직이고, 목이 몸통의 흔들림을 대부분 상쇄해 머리가 안정됩니다.
+긴 귀는 머리를 숙이거나 들 때 아래로 처지고, 고개를 돌릴 때는 같은 쪽으로 살짝 갸웃합니다.
+공개 사족보행 리그(Rigify 늑대·고양이 메타리그, Khronos Fox, Quaternius Shiba Inu·Husky)의 구성과
+동작 곡선을 분석해 이 연결 방식을 정했습니다. 분석한 모델 파일은 저장소에 포함하지 않습니다.
 
 [기본 동작 영상](locomotion/everyday-preview.mp4) · [목 움직임](locomotion/neck-movements.mp4) ·
 [꼬리 움직임](locomotion/tail-movements.mp4) · [앉기](locomotion/sit-sequence.mp4) ·

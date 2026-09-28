@@ -10,7 +10,7 @@
     {
       "name": "Idle",
       "label": "서서 쉬기",
-      "duration_seconds": 6.0,
+      "duration_seconds": 9.0,
       "loop": true,
       "entry_state": "stand",
       "exit_state": "stand",
