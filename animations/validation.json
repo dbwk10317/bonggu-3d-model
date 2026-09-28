@@ -1,0 +1,57 @@
+{
+  "bytes": 8152452,
+  "source_rig_unchanged": true,
+  "source_appearance_unchanged": true,
+  "skin_joints": 73,
+  "clips": {
+    "RigDemo": {
+      "duration": 6.0,
+      "channels": 220,
+      "smile_range": [
+        0.0,
+        1.0
+      ],
+      "loop_closed": true
+    },
+    "PawScrabble": {
+      "duration": 4.0,
+      "channels": 220,
+      "smile_range": [
+        0.0,
+        0.0
+      ],
+      "loop_closed": true
+    },
+    "SniffAround": {
+      "duration": 4.800000190734863,
+      "channels": 220,
+      "smile_range": [
+        0.0,
+        0.0
+      ],
+      "loop_closed": true
+    },
+    "GentleHowl": {
+      "duration": 5.0,
+      "channels": 220,
+      "smile_range": [
+        0.0,
+        0.7748931050300598
+      ],
+      "loop_closed": true
+    }
+  },
+  "reimport_renders": {
+    "PawScrabble:36": 3.514887226952447e-07,
+    "PawScrabble:78": 3.732751696198075e-07,
+    "SniffAround:91": 4.807552860842811e-07,
+    "SniffAround:94": 5.228757527139451e-07,
+    "GentleHowl:76": 5.301379881523274e-07,
+    "GentleHowl:98": 4.0813362432850734e-07
+  },
+  "approved_release_unchanged": true,
+  "sha256": {
+    "bonggu-v2-behaviors.blend": "fe2e6823417ec5193bdb5679c5dc2e05c417a746e431800eebde3f4ba208fac2",
+    "bonggu-v2-behaviors.glb": "872e29424b8f091c8b98a4ab47ea39a81ada7b25f41137c9848051855774115f"
+  }
+}

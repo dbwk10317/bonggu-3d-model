@@ -1,0 +1,46 @@
+{
+  "method": "Inspected public YouTube storyboard frame sequences, not full-rate video or audio. Poses informed hand-authored keyframes; timing and amplitudes are artistic adaptations, not motion capture.",
+  "sources": [
+    {
+      "url": "https://www.youtube.com/shorts/35_4tLrMH44",
+      "title": "Digging time shihtzu dig in blanket #digging #habits #shihtzupuppy #cute",
+      "channel": "Shihtzu in India",
+      "duration_seconds": 15,
+      "used_for": "PawScrabble",
+      "observed_pose_reference": "Front paws reach forward and rake the blanket while the head and chest stay low."
+    },
+    {
+      "url": "https://www.youtube.com/shorts/4RzGA3wjzvA",
+      "title": "Cute Funny Shih Tzu Albert Digging #puppy #cutepuppy #shihtzu #shihtzualbert #shorts #dog",
+      "channel": "Shih Tzu Albert",
+      "duration_seconds": 16,
+      "used_for": "PawScrabble",
+      "observed_pose_reference": "Side-view changes show the short foreleg strokes and forward-leaning body."
+    },
+    {
+      "url": "https://www.youtube.com/shorts/_Uf0lSR-p4M",
+      "title": "Sniffing all the balls at the doggie park! 🐶🎾    #shorts #shihtzu #cute #puppy #funny",
+      "channel": "Precious Shih Tzu",
+      "duration_seconds": 13,
+      "used_for": "SniffAround",
+      "observed_pose_reference": "Sampled overview of a dog exploring objects with its nose down; resolution limits detailed timing analysis."
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=ounZxWVa5XY",
+      "title": "My Dog Is OBSESSED With My Purse! | Shih Tzu Won’t Stop Howling!",
+      "channel": "Little Miss Shih Tzu",
+      "duration_seconds": 404,
+      "used_for": "SniffAround",
+      "observed_pose_reference": "Clearer supplementary sequence: nose reaches toward a bag, then withdraws and searches again."
+    },
+    {
+      "url": "https://www.youtube.com/shorts/E5VU60-qr08",
+      "title": "Shih Tzu Dog vs. Squeaky Toy: Howling Barking Madness! 🤣 #shorts #shihtzu",
+      "channel": "Lacey Shih Tzu",
+      "duration_seconds": 26,
+      "used_for": "GentleHowl",
+      "observed_pose_reference": "Sequence shows the muzzle rising, head tilting back and returning toward neutral."
+    }
+  ],
+  "audio_included": false
+}

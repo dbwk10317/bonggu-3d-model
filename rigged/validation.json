@@ -1,0 +1,75 @@
+{
+  "source_preserved": {
+    "positions": "cadd1ffc976daf6784370eed3ca0eefd3187c567ef6d0b15352d2c05149524b0",
+    "faces": "2e389416f9e729996fb819f39d1be4f8b3e3b422694c064fda76902ed2587492",
+    "uv": "cc4ab6d766e41fc48d35ad6904e4dbfa1d2be6c0786f3d00d99c245cb265269c",
+    "material_indices": "6d2d12e7d0c79e519c6d31aadd07b624f7107e8795d61359ebdce6f73ce0353a",
+    "shape_keys": {
+      "Basis": "cadd1ffc976daf6784370eed3ca0eefd3187c567ef6d0b15352d2c05149524b0",
+      "Smile": "ebb320fed197b39df0c90c89c779ec6eae90d6bd1df13d2b6ba96651c62ab86a"
+    },
+    "textures": [
+      "6c51bac13cfcf5b44fe59b2bea3a697e282970c549f746a4255af731a1bbbfba",
+      "dc1134f24be9d1c0918fddf924b26c9c835fb327a6eee78a364e7c4ee56791b3"
+    ]
+  },
+  "source_sha256": "8dc168ca3fb3d6741d1ef35e3545324d045d5da5145572cb515874581eed66a9",
+  "bones": 85,
+  "deform_bones": 73,
+  "max_influences": 4,
+  "max_weight_sum_error": 5.029141902923584e-08,
+  "skin_edge_strain": {
+    "1": {
+      "max": 1.0038544835498782,
+      "p99": 1.0006071527760405
+    },
+    "55": {
+      "max": 1.917846840252856,
+      "p99": 1.1640150167568417
+    },
+    "91": {
+      "max": 1.5834678309260346,
+      "p99": 1.069482126251903
+    },
+    "136": {
+      "max": 2.602318035522173,
+      "p99": 1.1557735890160699
+    }
+  },
+  "glb": {
+    "bytes": 7841116,
+    "skin_joints": 73,
+    "triangles": 41198,
+    "unlit_materials": 2,
+    "smile_range": [
+      0.0,
+      1.0
+    ],
+    "animation_name": "RigDemo",
+    "animation_channels": 220
+  },
+  "reimport_renders": {
+    "1": {
+      "mean_absolute_pixel_error": 5.925924744870927e-07,
+      "p99": 0.0
+    },
+    "55": {
+      "mean_absolute_pixel_error": 0.0008299970856971211,
+      "p99": 0.019607841968536377
+    },
+    "91": {
+      "mean_absolute_pixel_error": 0.00028834708070865384,
+      "p99": 0.003921568393707275
+    },
+    "136": {
+      "mean_absolute_pixel_error": 0.00023396950113828535,
+      "p99": 0.003921568393707275
+    }
+  },
+  "release_unchanged": true,
+  "release_files_checked": 8,
+  "output_hashes": {
+    "bonggu-v2-rigged.blend": "0faaba9b246b5b055b669260fca5f07f3bfb93f60be85a4573411b057e0b3869",
+    "bonggu-v2-rigged.glb": "aada42f85f96d2e955f3a32bbb2b656bab60cf660bb47e904a85d9e4c23a6e0f"
+  }
+}

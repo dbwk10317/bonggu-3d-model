@@ -1,0 +1,1397 @@
+{
+  "source": "expressions/smile/refined/bonggu-v2-smile.blend",
+  "source_sha256": "8dc168ca3fb3d6741d1ef35e3545324d045d5da5145572cb515874581eed66a9",
+  "bones": 85,
+  "deform_bones": 73,
+  "max_vertex_influences": 4,
+  "weighted_vertices_per_bone": {
+    "Pelvis": 3545,
+    "Spine.01": 3019,
+    "Spine.02": 1847,
+    "Spine.03": 1371,
+    "Spine.04": 2162,
+    "Chest": 2600,
+    "Neck.01": 2067,
+    "Neck.02": 1763,
+    "Head": 7991,
+    "Ear.01.L": 741,
+    "Ear.02.L": 892,
+    "Ear.03.L": 986,
+    "Ear.04.L": 904,
+    "Scapula.L": 578,
+    "Fore.Upper.L": 1225,
+    "Fore.Lower.L": 1063,
+    "Fore.Paw.L": 650,
+    "Fore.Toe1.01.L": 158,
+    "Fore.Toe1.02.L": 97,
+    "Fore.Toe2.01.L": 162,
+    "Fore.Toe2.02.L": 97,
+    "Fore.Toe3.01.L": 162,
+    "Fore.Toe3.02.L": 107,
+    "Fore.Toe4.01.L": 150,
+    "Fore.Toe4.02.L": 95,
+    "Hind.Upper.L": 1272,
+    "Hind.Lower.L": 1170,
+    "Hind.Hock.L": 740,
+    "Hind.Paw.L": 430,
+    "Hind.Toe1.01.L": 145,
+    "Hind.Toe1.02.L": 54,
+    "Hind.Toe2.01.L": 161,
+    "Hind.Toe2.02.L": 57,
+    "Hind.Toe3.01.L": 174,
+    "Hind.Toe3.02.L": 64,
+    "Hind.Toe4.01.L": 134,
+    "Hind.Toe4.02.L": 73,
+    "Ear.01.R": 720,
+    "Ear.02.R": 862,
+    "Ear.03.R": 912,
+    "Ear.04.R": 862,
+    "Scapula.R": 577,
+    "Fore.Upper.R": 1206,
+    "Fore.Lower.R": 1034,
+    "Fore.Paw.R": 653,
+    "Fore.Toe1.01.R": 137,
+    "Fore.Toe1.02.R": 81,
+    "Fore.Toe2.01.R": 163,
+    "Fore.Toe2.02.R": 106,
+    "Fore.Toe3.01.R": 160,
+    "Fore.Toe3.02.R": 112,
+    "Fore.Toe4.01.R": 182,
+    "Fore.Toe4.02.R": 130,
+    "Hind.Upper.R": 1247,
+    "Hind.Lower.R": 1175,
+    "Hind.Hock.R": 753,
+    "Hind.Paw.R": 458,
+    "Hind.Toe1.01.R": 141,
+    "Hind.Toe1.02.R": 81,
+    "Hind.Toe2.01.R": 196,
+    "Hind.Toe2.02.R": 70,
+    "Hind.Toe3.01.R": 167,
+    "Hind.Toe3.02.R": 62,
+    "Hind.Toe4.01.R": 134,
+    "Hind.Toe4.02.R": 35,
+    "Tail.01": 2600,
+    "Tail.02": 1154,
+    "Tail.03": 1564,
+    "Tail.04": 1686,
+    "Tail.05": 1454,
+    "Tail.06": 1716,
+    "Tail.07": 1829,
+    "Tail.08": 1635
+  },
+  "rest_ik_errors": {
+    "Fore.L": 9.52549153412689e-06,
+    "Hind.L": 6.815409835042604e-05,
+    "Fore.R": 9.52549153412689e-06,
+    "Hind.R": 6.815409835042604e-05
+  },
+  "pose_checks": {
+    "rest": {
+      "min_z": 0.0022082561627030373,
+      "max_displacement": 7.48587715185969e-05
+    },
+    "head-turn": {
+      "min_z": 0.002208260353654623,
+      "max_displacement": 0.0331401202792108
+    },
+    "paw-lift": {
+      "min_z": 0.0022082561627030373,
+      "max_displacement": 0.02817957437223853
+    },
+    "crouch": {
+      "min_z": 0.0022082962095737457,
+      "max_displacement": 0.026906721271952202
+    },
+    "tail-wag": {
+      "min_z": 0.0022082561627030373,
+      "max_displacement": 0.031054055705141168
+    },
+    "ears": {
+      "min_z": 0.0022082561627030373,
+      "max_displacement": 0.013308724659441938
+    },
+    "toe-curl": {
+      "min_z": 0.0022082561627030373,
+      "max_displacement": 0.022785855127478355
+    }
+  },
+  "mesh_coordinates_unchanged": true,
+  "smile_coordinates_unchanged": true,
+  "skeleton": {
+    "CTRL.Root": {
+      "head": [
+        0,
+        0,
+        0
+      ],
+      "tail": [
+        0,
+        0,
+        0.025
+      ],
+      "parent": null,
+      "group": "Main controls",
+      "deform": false
+    },
+    "CTRL.Body": {
+      "head": [
+        0,
+        0.07,
+        0.155
+      ],
+      "tail": [
+        0,
+        0.07,
+        0.185
+      ],
+      "parent": "CTRL.Root",
+      "group": "Main controls",
+      "deform": false
+    },
+    "Pelvis": {
+      "head": [
+        0,
+        0.145,
+        0.15
+      ],
+      "tail": [
+        0,
+        0.119,
+        0.165
+      ],
+      "parent": "CTRL.Body",
+      "group": "Spine and head",
+      "deform": true
+    },
+    "Spine.01": {
+      "head": [
+        0,
+        0.119,
+        0.165
+      ],
+      "tail": [
+        0,
+        0.083,
+        0.165
+      ],
+      "parent": "Pelvis",
+      "group": "Spine and head",
+      "deform": true
+    },
+    "Spine.02": {
+      "head": [
+        0,
+        0.083,
+        0.165
+      ],
+      "tail": [
+        0,
+        0.042,
+        0.166
+      ],
+      "parent": "Spine.01",
+      "group": "Spine and head",
+      "deform": true
+    },
+    "Spine.03": {
+      "head": [
+        0,
+        0.042,
+        0.166
+      ],
+      "tail": [
+        0,
+        0.005,
+        0.167
+      ],
+      "parent": "Spine.02",
+      "group": "Spine and head",
+      "deform": true
+    },
+    "Spine.04": {
+      "head": [
+        0,
+        0.005,
+        0.167
+      ],
+      "tail": [
+        0,
+        -0.035,
+        0.176
+      ],
+      "parent": "Spine.03",
+      "group": "Spine and head",
+      "deform": true
+    },
+    "Chest": {
+      "head": [
+        0,
+        -0.035,
+        0.176
+      ],
+      "tail": [
+        0,
+        -0.075,
+        0.185
+      ],
+      "parent": "Spine.04",
+      "group": "Spine and head",
+      "deform": true
+    },
+    "Neck.01": {
+      "head": [
+        0,
+        -0.075,
+        0.185
+      ],
+      "tail": [
+        0,
+        -0.099,
+        0.213
+      ],
+      "parent": "Chest",
+      "group": "Spine and head",
+      "deform": true
+    },
+    "Neck.02": {
+      "head": [
+        0,
+        -0.099,
+        0.213
+      ],
+      "tail": [
+        0,
+        -0.12,
+        0.239
+      ],
+      "parent": "Neck.01",
+      "group": "Spine and head",
+      "deform": true
+    },
+    "Head": {
+      "head": [
+        0,
+        -0.12,
+        0.239
+      ],
+      "tail": [
+        0,
+        -0.135,
+        0.289
+      ],
+      "parent": "Neck.02",
+      "group": "Spine and head",
+      "deform": true
+    },
+    "Ear.01.L": {
+      "head": [
+        0.043,
+        -0.117,
+        0.29
+      ],
+      "tail": [
+        0.062,
+        -0.118,
+        0.274
+      ],
+      "parent": "Head",
+      "group": "Ears",
+      "deform": true
+    },
+    "Ear.02.L": {
+      "head": [
+        0.062,
+        -0.118,
+        0.274
+      ],
+      "tail": [
+        0.078,
+        -0.116,
+        0.249
+      ],
+      "parent": "Ear.01.L",
+      "group": "Ears",
+      "deform": true
+    },
+    "Ear.03.L": {
+      "head": [
+        0.078,
+        -0.116,
+        0.249
+      ],
+      "tail": [
+        0.081,
+        -0.111,
+        0.224
+      ],
+      "parent": "Ear.02.L",
+      "group": "Ears",
+      "deform": true
+    },
+    "Ear.04.L": {
+      "head": [
+        0.081,
+        -0.111,
+        0.224
+      ],
+      "tail": [
+        0.073,
+        -0.107,
+        0.203
+      ],
+      "parent": "Ear.03.L",
+      "group": "Ears",
+      "deform": true
+    },
+    "Scapula.L": {
+      "head": [
+        0.036,
+        -0.057,
+        0.177
+      ],
+      "tail": [
+        0.044,
+        -0.073,
+        0.144
+      ],
+      "parent": "Chest",
+      "group": "Legs",
+      "deform": true
+    },
+    "Fore.Upper.L": {
+      "head": [
+        0.044,
+        -0.073,
+        0.144
+      ],
+      "tail": [
+        0.043,
+        -0.053,
+        0.089
+      ],
+      "parent": "Scapula.L",
+      "group": "Legs",
+      "deform": true
+    },
+    "Fore.Lower.L": {
+      "head": [
+        0.043,
+        -0.053,
+        0.089
+      ],
+      "tail": [
+        0.043,
+        -0.07,
+        0.028
+      ],
+      "parent": "Fore.Upper.L",
+      "group": "Legs",
+      "deform": true
+    },
+    "Fore.Paw.L": {
+      "head": [
+        0.043,
+        -0.07,
+        0.028
+      ],
+      "tail": [
+        0.044,
+        -0.085,
+        0.012
+      ],
+      "parent": "Fore.Lower.L",
+      "group": "Legs",
+      "deform": true
+    },
+    "CTRL.ForePaw.L": {
+      "head": [
+        0.043,
+        -0.07,
+        0.028
+      ],
+      "tail": [
+        0.044,
+        -0.085,
+        0.012
+      ],
+      "parent": "CTRL.Root",
+      "group": "Paw IK",
+      "deform": false
+    },
+    "CTRL.ForePole.L": {
+      "head": [
+        0.044,
+        0.028,
+        0.088
+      ],
+      "tail": [
+        0.04399999976158142,
+        0.02800000086426735,
+        0.10300000011920929
+      ],
+      "parent": "CTRL.Root",
+      "group": "Bend direction",
+      "deform": false
+    },
+    "Fore.Toe1.01.L": {
+      "head": [
+        0.032,
+        -0.081,
+        0.011
+      ],
+      "tail": [
+        0.032,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "parent": "Fore.Paw.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe1.02.L": {
+      "head": [
+        0.032,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "tail": [
+        0.032,
+        -0.099,
+        0.008
+      ],
+      "parent": "Fore.Toe1.01.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe2.01.L": {
+      "head": [
+        0.039999999999999994,
+        -0.081,
+        0.011
+      ],
+      "tail": [
+        0.039999999999999994,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "parent": "Fore.Paw.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe2.02.L": {
+      "head": [
+        0.039999999999999994,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "tail": [
+        0.039999999999999994,
+        -0.099,
+        0.008
+      ],
+      "parent": "Fore.Toe2.01.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe3.01.L": {
+      "head": [
+        0.048,
+        -0.081,
+        0.011
+      ],
+      "tail": [
+        0.048,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "parent": "Fore.Paw.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe3.02.L": {
+      "head": [
+        0.048,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "tail": [
+        0.048,
+        -0.099,
+        0.008
+      ],
+      "parent": "Fore.Toe3.01.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe4.01.L": {
+      "head": [
+        0.055999999999999994,
+        -0.081,
+        0.011
+      ],
+      "tail": [
+        0.055999999999999994,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "parent": "Fore.Paw.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe4.02.L": {
+      "head": [
+        0.055999999999999994,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "tail": [
+        0.055999999999999994,
+        -0.099,
+        0.008
+      ],
+      "parent": "Fore.Toe4.01.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Upper.L": {
+      "head": [
+        0.049,
+        0.143,
+        0.153
+      ],
+      "tail": [
+        0.051,
+        0.128,
+        0.101
+      ],
+      "parent": "Pelvis",
+      "group": "Legs",
+      "deform": true
+    },
+    "Hind.Lower.L": {
+      "head": [
+        0.051,
+        0.128,
+        0.101
+      ],
+      "tail": [
+        0.052,
+        0.176,
+        0.054
+      ],
+      "parent": "Hind.Upper.L",
+      "group": "Legs",
+      "deform": true
+    },
+    "Hind.Hock.L": {
+      "head": [
+        0.052,
+        0.176,
+        0.054
+      ],
+      "tail": [
+        0.056,
+        0.172,
+        0.021
+      ],
+      "parent": "Hind.Lower.L",
+      "group": "Legs",
+      "deform": true
+    },
+    "Hind.Paw.L": {
+      "head": [
+        0.056,
+        0.172,
+        0.021
+      ],
+      "tail": [
+        0.057,
+        0.162,
+        0.011
+      ],
+      "parent": "Hind.Hock.L",
+      "group": "Legs",
+      "deform": true
+    },
+    "CTRL.HindPaw.L": {
+      "head": [
+        0.056,
+        0.172,
+        0.021
+      ],
+      "tail": [
+        0.057,
+        0.162,
+        0.011
+      ],
+      "parent": "CTRL.Root",
+      "group": "Paw IK",
+      "deform": false
+    },
+    "CTRL.HindPole.L": {
+      "head": [
+        0.051,
+        0.06,
+        0.1
+      ],
+      "tail": [
+        0.050999999046325684,
+        0.05999999865889549,
+        0.11500000208616257
+      ],
+      "parent": "CTRL.Root",
+      "group": "Bend direction",
+      "deform": false
+    },
+    "MCH.Hock.L": {
+      "head": [
+        0.052,
+        0.176,
+        0.054
+      ],
+      "tail": [
+        0.056,
+        0.172,
+        0.021
+      ],
+      "parent": "CTRL.HindPaw.L",
+      "group": "Mechanism",
+      "deform": false
+    },
+    "Hind.Toe1.01.L": {
+      "head": [
+        0.045,
+        0.166,
+        0.011
+      ],
+      "tail": [
+        0.045,
+        0.157,
+        0.009999999999999998
+      ],
+      "parent": "Hind.Paw.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe1.02.L": {
+      "head": [
+        0.045,
+        0.157,
+        0.009999999999999998
+      ],
+      "tail": [
+        0.045,
+        0.148,
+        0.008
+      ],
+      "parent": "Hind.Toe1.01.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe2.01.L": {
+      "head": [
+        0.053000000000000005,
+        0.166,
+        0.011
+      ],
+      "tail": [
+        0.053000000000000005,
+        0.157,
+        0.009999999999999998
+      ],
+      "parent": "Hind.Paw.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe2.02.L": {
+      "head": [
+        0.053000000000000005,
+        0.157,
+        0.009999999999999998
+      ],
+      "tail": [
+        0.053000000000000005,
+        0.148,
+        0.008
+      ],
+      "parent": "Hind.Toe2.01.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe3.01.L": {
+      "head": [
+        0.061,
+        0.166,
+        0.011
+      ],
+      "tail": [
+        0.061,
+        0.157,
+        0.009999999999999998
+      ],
+      "parent": "Hind.Paw.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe3.02.L": {
+      "head": [
+        0.061,
+        0.157,
+        0.009999999999999998
+      ],
+      "tail": [
+        0.061,
+        0.148,
+        0.008
+      ],
+      "parent": "Hind.Toe3.01.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe4.01.L": {
+      "head": [
+        0.069,
+        0.166,
+        0.011
+      ],
+      "tail": [
+        0.069,
+        0.157,
+        0.009999999999999998
+      ],
+      "parent": "Hind.Paw.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe4.02.L": {
+      "head": [
+        0.069,
+        0.157,
+        0.009999999999999998
+      ],
+      "tail": [
+        0.069,
+        0.148,
+        0.008
+      ],
+      "parent": "Hind.Toe4.01.L",
+      "group": "Toes",
+      "deform": true
+    },
+    "Ear.01.R": {
+      "head": [
+        -0.043,
+        -0.117,
+        0.29
+      ],
+      "tail": [
+        -0.062,
+        -0.118,
+        0.274
+      ],
+      "parent": "Head",
+      "group": "Ears",
+      "deform": true
+    },
+    "Ear.02.R": {
+      "head": [
+        -0.062,
+        -0.118,
+        0.274
+      ],
+      "tail": [
+        -0.078,
+        -0.116,
+        0.249
+      ],
+      "parent": "Ear.01.R",
+      "group": "Ears",
+      "deform": true
+    },
+    "Ear.03.R": {
+      "head": [
+        -0.078,
+        -0.116,
+        0.249
+      ],
+      "tail": [
+        -0.081,
+        -0.111,
+        0.224
+      ],
+      "parent": "Ear.02.R",
+      "group": "Ears",
+      "deform": true
+    },
+    "Ear.04.R": {
+      "head": [
+        -0.081,
+        -0.111,
+        0.224
+      ],
+      "tail": [
+        -0.073,
+        -0.107,
+        0.203
+      ],
+      "parent": "Ear.03.R",
+      "group": "Ears",
+      "deform": true
+    },
+    "Scapula.R": {
+      "head": [
+        -0.036,
+        -0.057,
+        0.177
+      ],
+      "tail": [
+        -0.044,
+        -0.073,
+        0.144
+      ],
+      "parent": "Chest",
+      "group": "Legs",
+      "deform": true
+    },
+    "Fore.Upper.R": {
+      "head": [
+        -0.044,
+        -0.073,
+        0.144
+      ],
+      "tail": [
+        -0.043,
+        -0.053,
+        0.089
+      ],
+      "parent": "Scapula.R",
+      "group": "Legs",
+      "deform": true
+    },
+    "Fore.Lower.R": {
+      "head": [
+        -0.043,
+        -0.053,
+        0.089
+      ],
+      "tail": [
+        -0.043,
+        -0.07,
+        0.028
+      ],
+      "parent": "Fore.Upper.R",
+      "group": "Legs",
+      "deform": true
+    },
+    "Fore.Paw.R": {
+      "head": [
+        -0.043,
+        -0.07,
+        0.028
+      ],
+      "tail": [
+        -0.044,
+        -0.085,
+        0.012
+      ],
+      "parent": "Fore.Lower.R",
+      "group": "Legs",
+      "deform": true
+    },
+    "CTRL.ForePaw.R": {
+      "head": [
+        -0.043,
+        -0.07,
+        0.028
+      ],
+      "tail": [
+        -0.044,
+        -0.085,
+        0.012
+      ],
+      "parent": "CTRL.Root",
+      "group": "Paw IK",
+      "deform": false
+    },
+    "CTRL.ForePole.R": {
+      "head": [
+        -0.044,
+        0.028,
+        0.088
+      ],
+      "tail": [
+        -0.04399999976158142,
+        0.02800000086426735,
+        0.10300000011920929
+      ],
+      "parent": "CTRL.Root",
+      "group": "Bend direction",
+      "deform": false
+    },
+    "Fore.Toe1.01.R": {
+      "head": [
+        -0.055999999999999994,
+        -0.081,
+        0.011
+      ],
+      "tail": [
+        -0.055999999999999994,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "parent": "Fore.Paw.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe1.02.R": {
+      "head": [
+        -0.055999999999999994,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "tail": [
+        -0.055999999999999994,
+        -0.099,
+        0.008
+      ],
+      "parent": "Fore.Toe1.01.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe2.01.R": {
+      "head": [
+        -0.048,
+        -0.081,
+        0.011
+      ],
+      "tail": [
+        -0.048,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "parent": "Fore.Paw.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe2.02.R": {
+      "head": [
+        -0.048,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "tail": [
+        -0.048,
+        -0.099,
+        0.008
+      ],
+      "parent": "Fore.Toe2.01.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe3.01.R": {
+      "head": [
+        -0.039999999999999994,
+        -0.081,
+        0.011
+      ],
+      "tail": [
+        -0.039999999999999994,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "parent": "Fore.Paw.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe3.02.R": {
+      "head": [
+        -0.039999999999999994,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "tail": [
+        -0.039999999999999994,
+        -0.099,
+        0.008
+      ],
+      "parent": "Fore.Toe3.01.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe4.01.R": {
+      "head": [
+        -0.032,
+        -0.081,
+        0.011
+      ],
+      "tail": [
+        -0.032,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "parent": "Fore.Paw.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Fore.Toe4.02.R": {
+      "head": [
+        -0.032,
+        -0.09000000000000001,
+        0.009999999999999998
+      ],
+      "tail": [
+        -0.032,
+        -0.099,
+        0.008
+      ],
+      "parent": "Fore.Toe4.01.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Upper.R": {
+      "head": [
+        -0.049,
+        0.143,
+        0.153
+      ],
+      "tail": [
+        -0.051,
+        0.128,
+        0.101
+      ],
+      "parent": "Pelvis",
+      "group": "Legs",
+      "deform": true
+    },
+    "Hind.Lower.R": {
+      "head": [
+        -0.051,
+        0.128,
+        0.101
+      ],
+      "tail": [
+        -0.052,
+        0.176,
+        0.054
+      ],
+      "parent": "Hind.Upper.R",
+      "group": "Legs",
+      "deform": true
+    },
+    "Hind.Hock.R": {
+      "head": [
+        -0.052,
+        0.176,
+        0.054
+      ],
+      "tail": [
+        -0.056,
+        0.172,
+        0.021
+      ],
+      "parent": "Hind.Lower.R",
+      "group": "Legs",
+      "deform": true
+    },
+    "Hind.Paw.R": {
+      "head": [
+        -0.056,
+        0.172,
+        0.021
+      ],
+      "tail": [
+        -0.057,
+        0.162,
+        0.011
+      ],
+      "parent": "Hind.Hock.R",
+      "group": "Legs",
+      "deform": true
+    },
+    "CTRL.HindPaw.R": {
+      "head": [
+        -0.056,
+        0.172,
+        0.021
+      ],
+      "tail": [
+        -0.057,
+        0.162,
+        0.011
+      ],
+      "parent": "CTRL.Root",
+      "group": "Paw IK",
+      "deform": false
+    },
+    "CTRL.HindPole.R": {
+      "head": [
+        -0.051,
+        0.06,
+        0.1
+      ],
+      "tail": [
+        -0.050999999046325684,
+        0.05999999865889549,
+        0.11500000208616257
+      ],
+      "parent": "CTRL.Root",
+      "group": "Bend direction",
+      "deform": false
+    },
+    "MCH.Hock.R": {
+      "head": [
+        -0.052,
+        0.176,
+        0.054
+      ],
+      "tail": [
+        -0.056,
+        0.172,
+        0.021
+      ],
+      "parent": "CTRL.HindPaw.R",
+      "group": "Mechanism",
+      "deform": false
+    },
+    "Hind.Toe1.01.R": {
+      "head": [
+        -0.069,
+        0.166,
+        0.011
+      ],
+      "tail": [
+        -0.069,
+        0.157,
+        0.009999999999999998
+      ],
+      "parent": "Hind.Paw.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe1.02.R": {
+      "head": [
+        -0.069,
+        0.157,
+        0.009999999999999998
+      ],
+      "tail": [
+        -0.069,
+        0.148,
+        0.008
+      ],
+      "parent": "Hind.Toe1.01.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe2.01.R": {
+      "head": [
+        -0.061,
+        0.166,
+        0.011
+      ],
+      "tail": [
+        -0.061,
+        0.157,
+        0.009999999999999998
+      ],
+      "parent": "Hind.Paw.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe2.02.R": {
+      "head": [
+        -0.061,
+        0.157,
+        0.009999999999999998
+      ],
+      "tail": [
+        -0.061,
+        0.148,
+        0.008
+      ],
+      "parent": "Hind.Toe2.01.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe3.01.R": {
+      "head": [
+        -0.053000000000000005,
+        0.166,
+        0.011
+      ],
+      "tail": [
+        -0.053000000000000005,
+        0.157,
+        0.009999999999999998
+      ],
+      "parent": "Hind.Paw.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe3.02.R": {
+      "head": [
+        -0.053000000000000005,
+        0.157,
+        0.009999999999999998
+      ],
+      "tail": [
+        -0.053000000000000005,
+        0.148,
+        0.008
+      ],
+      "parent": "Hind.Toe3.01.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe4.01.R": {
+      "head": [
+        -0.045,
+        0.166,
+        0.011
+      ],
+      "tail": [
+        -0.045,
+        0.157,
+        0.009999999999999998
+      ],
+      "parent": "Hind.Paw.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Hind.Toe4.02.R": {
+      "head": [
+        -0.045,
+        0.157,
+        0.009999999999999998
+      ],
+      "tail": [
+        -0.045,
+        0.148,
+        0.008
+      ],
+      "parent": "Hind.Toe4.01.R",
+      "group": "Toes",
+      "deform": true
+    },
+    "Tail.01": {
+      "head": [
+        0,
+        0.172,
+        0.205
+      ],
+      "tail": [
+        0,
+        0.184,
+        0.231
+      ],
+      "parent": "Pelvis",
+      "group": "Tail",
+      "deform": true
+    },
+    "Tail.02": {
+      "head": [
+        0,
+        0.184,
+        0.231
+      ],
+      "tail": [
+        -0.006,
+        0.185,
+        0.26
+      ],
+      "parent": "Tail.01",
+      "group": "Tail",
+      "deform": true
+    },
+    "Tail.03": {
+      "head": [
+        -0.006,
+        0.185,
+        0.26
+      ],
+      "tail": [
+        -0.019,
+        0.175,
+        0.288
+      ],
+      "parent": "Tail.02",
+      "group": "Tail",
+      "deform": true
+    },
+    "Tail.04": {
+      "head": [
+        -0.019,
+        0.175,
+        0.288
+      ],
+      "tail": [
+        -0.027,
+        0.153,
+        0.309
+      ],
+      "parent": "Tail.03",
+      "group": "Tail",
+      "deform": true
+    },
+    "Tail.05": {
+      "head": [
+        -0.027,
+        0.153,
+        0.309
+      ],
+      "tail": [
+        -0.028,
+        0.129,
+        0.31
+      ],
+      "parent": "Tail.04",
+      "group": "Tail",
+      "deform": true
+    },
+    "Tail.06": {
+      "head": [
+        -0.028,
+        0.129,
+        0.31
+      ],
+      "tail": [
+        -0.027,
+        0.11,
+        0.292
+      ],
+      "parent": "Tail.05",
+      "group": "Tail",
+      "deform": true
+    },
+    "Tail.07": {
+      "head": [
+        -0.027,
+        0.11,
+        0.292
+      ],
+      "tail": [
+        -0.025,
+        0.11,
+        0.271
+      ],
+      "parent": "Tail.06",
+      "group": "Tail",
+      "deform": true
+    },
+    "Tail.08": {
+      "head": [
+        -0.025,
+        0.11,
+        0.271
+      ],
+      "tail": [
+        -0.022,
+        0.122,
+        0.252
+      ],
+      "parent": "Tail.07",
+      "group": "Tail",
+      "deform": true
+    }
+  }
+}

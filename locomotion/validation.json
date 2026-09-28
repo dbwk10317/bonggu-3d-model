@@ -1,0 +1,135 @@
+{
+  "prepared_rig_appearance_preserved": true,
+  "tail_topology_updated": true,
+  "protected_vertices_unchanged": 17668,
+  "native_bones": 112,
+  "skin_joints": 78,
+  "triangles": 36968,
+  "bytes": 8808740,
+  "clips": {
+    "Idle": {
+      "duration": 3.0,
+      "channels": 235,
+      "loop": true
+    },
+    "Walk": {
+      "duration": 1.2000000476837158,
+      "channels": 235,
+      "loop": true
+    },
+    "Run": {
+      "duration": 0.6000000238418579,
+      "channels": 235,
+      "loop": true
+    },
+    "SitDown": {
+      "duration": 1.399999976158142,
+      "channels": 235,
+      "loop": false
+    },
+    "SitIdle": {
+      "duration": 3.0,
+      "channels": 235,
+      "loop": true
+    },
+    "SitUp": {
+      "duration": 1.2000000476837158,
+      "channels": 235,
+      "loop": false
+    },
+    "LieDown": {
+      "duration": 1.600000023841858,
+      "channels": 235,
+      "loop": false
+    },
+    "LieIdle": {
+      "duration": 3.0,
+      "channels": 235,
+      "loop": true
+    },
+    "LieUp": {
+      "duration": 1.399999976158142,
+      "channels": 235,
+      "loop": false
+    },
+    "PlayBow": {
+      "duration": 3.0,
+      "channels": 235,
+      "loop": true
+    },
+    "LookAround": {
+      "duration": 4.0,
+      "channels": 235,
+      "loop": true
+    },
+    "GroundSniff": {
+      "duration": 4.0,
+      "channels": 235,
+      "loop": true
+    },
+    "LookUp": {
+      "duration": 3.5999999046325684,
+      "channels": 235,
+      "loop": true
+    },
+    "TailWagSoft": {
+      "duration": 4.0,
+      "channels": 235,
+      "loop": true
+    },
+    "TailWagHappy": {
+      "duration": 3.200000047683716,
+      "channels": 235,
+      "loop": true
+    },
+    "TailLower": {
+      "duration": 1.399999976158142,
+      "channels": 235,
+      "loop": false
+    },
+    "TailLowIdle": {
+      "duration": 3.0,
+      "channels": 235,
+      "loop": true
+    },
+    "TailRaise": {
+      "duration": 1.399999976158142,
+      "channels": 235,
+      "loop": false
+    }
+  },
+  "transition_endpoints_match": true,
+  "reimport_render_errors": {
+    "Idle:46": 1.9573801869733466e-07,
+    "Walk:19": 3.4041389719479615e-07,
+    "Run:5": 4.936002013790938e-07,
+    "Run:10": 5.906181177124381e-07,
+    "Run:15": 5.02110471845501e-07,
+    "SitDown:22": 2.774373602329029e-07,
+    "SitDown:43": 6.110430953817236e-07,
+    "SitIdle:46": 6.110430953817236e-07,
+    "SitUp:19": 3.5062637956192097e-07,
+    "LieDown:25": 3.063725048883094e-07,
+    "LieDown:49": 4.493463525755538e-07,
+    "LieIdle:46": 4.493463525755538e-07,
+    "LieUp:22": 3.387118275794718e-07,
+    "PlayBow:46": 3.0807458743866946e-07,
+    "LookAround:31": 3.608387843188312e-07,
+    "LookAround:91": 3.42115992680192e-07,
+    "GroundSniff:61": 2.280772767133183e-07,
+    "LookUp:55": 2.1275870191554228e-07,
+    "TailWagSoft:51": 1.9233385359661446e-07,
+    "TailWagSoft:71": 2.3658766359504726e-07,
+    "TailWagHappy:21": 1.9573796695719163e-07,
+    "TailWagHappy:29": 2.1616282821115522e-07,
+    "TailLower:22": 9.208196877605385e-07,
+    "TailLower:43": 1.9063180985136163e-07,
+    "TailLowIdle:46": 1.9914213205791183e-07,
+    "TailRaise:22": 5.429602202234996e-07
+  },
+  "approved_release_unchanged": true,
+  "sha256": {
+    "bonggu-v2-everyday.blend": "656d1613973061e433afeeb67d62390131185c03a83071a6b521be17190b2aa1",
+    "bonggu-v2-everyday.glb": "5d9b69d91aaa0e7233ec0068892dbf17791d27a628bbf325091e7292dee2155c"
+  }
+}

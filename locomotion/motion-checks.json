@@ -1,0 +1,150 @@
+{
+  "source_sha256": "cbe924177338f2c83550fbab0f1aa8ecfe2087e19ba13a085ed906b8a0f4de70",
+  "clips": {
+    "Idle": {
+      "frames": 91,
+      "min_z": 0.002208205871284008,
+      "max_ik_error": 6.879190099470089e-08,
+      "max_p99_edge_stretch": 1.0300257378632496,
+      "max_frame_displacement": 0.0002602946636128728,
+      "endpoint_difference": 5.188757157986414e-19
+    },
+    "Walk": {
+      "frames": 37,
+      "min_z": 0.0022082349751144648,
+      "max_ik_error": 6.746787680787904e-08,
+      "max_p99_edge_stretch": 1.2453875540561807,
+      "max_frame_displacement": 0.013566785610874349,
+      "endpoint_difference": 3.673941302218055e-19
+    },
+    "Run": {
+      "frames": 19,
+      "min_z": 0.0022082491777837276,
+      "max_ik_error": 1.6395510051150163e-07,
+      "max_p99_edge_stretch": 1.3982513190691608,
+      "max_frame_displacement": 0.02176343121968823,
+      "endpoint_difference": 3.673941302218055e-19
+    },
+    "SitDown": {
+      "frames": 43,
+      "min_z": 0.0022063341457396746,
+      "max_ik_error": 3.904559203566088e-06,
+      "max_p99_edge_stretch": 1.7287373920060725,
+      "max_frame_displacement": 0.005089826982501548,
+      "endpoint_difference": 0.1410396695137024
+    },
+    "SitIdle": {
+      "frames": 91,
+      "min_z": 0.0022063341457396746,
+      "max_ik_error": 3.904559203566088e-06,
+      "max_p99_edge_stretch": 1.732645433385394,
+      "max_frame_displacement": 0.0002521907035936487,
+      "endpoint_difference": 6.938893903907228e-18
+    },
+    "SitUp": {
+      "frames": 37,
+      "min_z": 0.0022063341457396746,
+      "max_ik_error": 3.904559203566088e-06,
+      "max_p99_edge_stretch": 1.7287373920060725,
+      "max_frame_displacement": 0.005938186054430731,
+      "endpoint_difference": 0.1410396695137024
+    },
+    "LieDown": {
+      "frames": 49,
+      "min_z": 0.001630254089832306,
+      "max_ik_error": 1.4253799967250967e-07,
+      "max_p99_edge_stretch": 1.5667455407061384,
+      "max_frame_displacement": 0.00326066098479044,
+      "endpoint_difference": 0.10215997695922852
+    },
+    "LieIdle": {
+      "frames": 91,
+      "min_z": 0.001630254089832306,
+      "max_ik_error": 1.0457388198091238e-07,
+      "max_p99_edge_stretch": 1.5667455407061384,
+      "max_frame_displacement": 0.000251734783461283,
+      "endpoint_difference": 5.197923353149268e-19
+    },
+    "LieUp": {
+      "frames": 43,
+      "min_z": 0.001630254089832306,
+      "max_ik_error": 1.284009809763289e-07,
+      "max_p99_edge_stretch": 1.5667455407061384,
+      "max_frame_displacement": 0.0037260731594822615,
+      "endpoint_difference": 0.10215997695922852
+    },
+    "PlayBow": {
+      "frames": 91,
+      "min_z": 0.0022082326468080282,
+      "max_ik_error": 1.423431424389988e-07,
+      "max_p99_edge_stretch": 1.3892358024471743,
+      "max_frame_displacement": 0.005204344379212685,
+      "endpoint_difference": 0.0
+    },
+    "LookAround": {
+      "frames": 121,
+      "min_z": 0.0022082431241869926,
+      "max_ik_error": 3.687849244703228e-08,
+      "max_p99_edge_stretch": 1.4932067484028888,
+      "max_frame_displacement": 0.004832421036836626,
+      "endpoint_difference": 0.0
+    },
+    "GroundSniff": {
+      "frames": 121,
+      "min_z": 0.00220821937546134,
+      "max_ik_error": 7.242792135187827e-08,
+      "max_p99_edge_stretch": 1.563593794398945,
+      "max_frame_displacement": 0.008298466047186984,
+      "endpoint_difference": 0.0
+    },
+    "LookUp": {
+      "frames": 109,
+      "min_z": 0.002208212623372674,
+      "max_ik_error": 7.242792135187827e-08,
+      "max_p99_edge_stretch": 1.2956516345580171,
+      "max_frame_displacement": 0.004025151626780839,
+      "endpoint_difference": 0.0
+    },
+    "TailWagSoft": {
+      "frames": 121,
+      "min_z": 0.0022082431241869926,
+      "max_ik_error": 3.687849244703228e-08,
+      "max_p99_edge_stretch": 1.0094712271182433,
+      "max_frame_displacement": 0.005324071707196481,
+      "endpoint_difference": 0.0
+    },
+    "TailWagHappy": {
+      "frames": 97,
+      "min_z": 0.0022082431241869926,
+      "max_ik_error": 3.687849244703228e-08,
+      "max_p99_edge_stretch": 1.0163412935433633,
+      "max_frame_displacement": 0.023030483121178776,
+      "endpoint_difference": 0.0
+    },
+    "TailLower": {
+      "frames": 43,
+      "min_z": 0.0022082431241869926,
+      "max_ik_error": 3.687849244703228e-08,
+      "max_p99_edge_stretch": 1.3057896709328471,
+      "max_frame_displacement": 0.012675008042909289,
+      "endpoint_difference": 0.24136801064014435
+    },
+    "TailLowIdle": {
+      "frames": 91,
+      "min_z": 0.0022082431241869926,
+      "max_ik_error": 3.687849244703228e-08,
+      "max_p99_edge_stretch": 1.3025112913433252,
+      "max_frame_displacement": 0.0009166748751077263,
+      "endpoint_difference": 0.0
+    },
+    "TailRaise": {
+      "frames": 43,
+      "min_z": 0.0022082431241869926,
+      "max_ik_error": 3.687849244703228e-08,
+      "max_p99_edge_stretch": 1.3057896709328471,
+      "max_frame_displacement": 0.012675008042909289,
+      "endpoint_difference": 0.24136801064014435
+    }
+  },
+  "transition_endpoints_match": true
+}

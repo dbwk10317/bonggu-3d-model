@@ -1,0 +1,316 @@
+{
+  "source_sha256": "0faaba9b246b5b055b669260fca5f07f3bfb93f60be85a4573411b057e0b3869",
+  "native_bones": 112,
+  "deform_bones": 78,
+  "rest_max_error_m": 1.0110437870025635e-05,
+  "chains": {
+    "Fore.L": {
+      "bones": [
+        "Fore.Upper.L",
+        "Fore.Lower.L",
+        "Fore.Metacarpus.L",
+        "Fore.Paw.L"
+      ],
+      "points": [
+        [
+          0.044,
+          -0.073,
+          0.144
+        ],
+        [
+          0.044,
+          -0.048,
+          0.101
+        ],
+        [
+          0.044,
+          -0.072,
+          0.048
+        ],
+        [
+          0.044,
+          -0.085,
+          0.014
+        ],
+        [
+          0.044,
+          -0.094,
+          0.01
+        ]
+      ],
+      "control": "CTRL.ForePaw.L",
+      "roll": "CTRL.ForeToeRoll.L",
+      "fold": "CTRL.Carpus.L",
+      "target": "MCH.Carpus.L",
+      "pad": "MCH.ForePad.L",
+      "pole": "CTRL.ForePole.L",
+      "pole_angle": 1.5707963267948966,
+      "control_limits": {
+        "CTRL.Carpus.L": [
+          -1.4,
+          1.1
+        ],
+        "CTRL.ForeToeRoll.L": [
+          -0.25,
+          0.75
+        ]
+      }
+    },
+    "Hind.L": {
+      "bones": [
+        "Hind.Upper.L",
+        "Hind.Lower.L",
+        "Hind.Hock.L",
+        "Hind.Paw.L"
+      ],
+      "points": [
+        [
+          0.052,
+          0.143,
+          0.153
+        ],
+        [
+          0.052,
+          0.114,
+          0.101
+        ],
+        [
+          0.056,
+          0.176,
+          0.054
+        ],
+        [
+          0.056,
+          0.172,
+          0.021
+        ],
+        [
+          0.057,
+          0.162,
+          0.011
+        ]
+      ],
+      "control": "CTRL.HindPaw.L",
+      "roll": "CTRL.HindToeRoll.L",
+      "fold": "CTRL.Hock.L",
+      "target": "MCH.Hock.L",
+      "pad": "MCH.HindPad.L",
+      "pole": "CTRL.HindPole.L",
+      "pole_angle": -1.6124295580947547,
+      "control_limits": {
+        "CTRL.Hock.L": [
+          -1.4,
+          1.1
+        ],
+        "CTRL.HindToeRoll.L": [
+          -0.25,
+          0.75
+        ]
+      }
+    },
+    "Fore.R": {
+      "bones": [
+        "Fore.Upper.R",
+        "Fore.Lower.R",
+        "Fore.Metacarpus.R",
+        "Fore.Paw.R"
+      ],
+      "points": [
+        [
+          -0.044,
+          -0.073,
+          0.144
+        ],
+        [
+          -0.044,
+          -0.048,
+          0.101
+        ],
+        [
+          -0.044,
+          -0.072,
+          0.048
+        ],
+        [
+          -0.044,
+          -0.085,
+          0.014
+        ],
+        [
+          -0.044,
+          -0.094,
+          0.01
+        ]
+      ],
+      "control": "CTRL.ForePaw.R",
+      "roll": "CTRL.ForeToeRoll.R",
+      "fold": "CTRL.Carpus.R",
+      "target": "MCH.Carpus.R",
+      "pad": "MCH.ForePad.R",
+      "pole": "CTRL.ForePole.R",
+      "pole_angle": 1.5707963267948966,
+      "control_limits": {
+        "CTRL.Carpus.R": [
+          -1.4,
+          1.1
+        ],
+        "CTRL.ForeToeRoll.R": [
+          -0.25,
+          0.75
+        ]
+      }
+    },
+    "Hind.R": {
+      "bones": [
+        "Hind.Upper.R",
+        "Hind.Lower.R",
+        "Hind.Hock.R",
+        "Hind.Paw.R"
+      ],
+      "points": [
+        [
+          -0.052,
+          0.143,
+          0.153
+        ],
+        [
+          -0.052,
+          0.114,
+          0.101
+        ],
+        [
+          -0.056,
+          0.176,
+          0.054
+        ],
+        [
+          -0.056,
+          0.172,
+          0.021
+        ],
+        [
+          -0.057,
+          0.162,
+          0.011
+        ]
+      ],
+      "control": "CTRL.HindPaw.R",
+      "roll": "CTRL.HindToeRoll.R",
+      "fold": "CTRL.Hock.R",
+      "target": "MCH.Hock.R",
+      "pad": "MCH.HindPad.R",
+      "pole": "CTRL.HindPole.R",
+      "pole_angle": -1.5291630954950384,
+      "control_limits": {
+        "CTRL.Hock.R": [
+          -1.4,
+          1.1
+        ],
+        "CTRL.HindToeRoll.R": [
+          -0.25,
+          0.75
+        ]
+      }
+    }
+  },
+  "neck": {
+    "bones": [
+      "Neck.01",
+      "Neck.02",
+      "Neck.03",
+      "Neck.04",
+      "Neck.05"
+    ],
+    "points": [
+      [
+        0,
+        -0.075,
+        0.185
+      ],
+      [
+        0,
+        -0.087,
+        0.199
+      ],
+      [
+        0,
+        -0.099,
+        0.213
+      ],
+      [
+        0,
+        -0.1095,
+        0.226
+      ],
+      [
+        0,
+        -0.116,
+        0.233
+      ],
+      [
+        0,
+        -0.12,
+        0.239
+      ]
+    ],
+    "gaze_pitch_weights": [
+      0.1,
+      0.15,
+      0.2,
+      0.1,
+      0.35,
+      0.1
+    ],
+    "gaze_yaw_weights": [
+      0.05,
+      0.1,
+      0.15,
+      0.5,
+      0.05,
+      0.15
+    ],
+    "gaze_tilt_weights": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.2,
+      0.3
+    ],
+    "base_weights": [
+      0.6,
+      0.3,
+      0.1,
+      0,
+      0,
+      0
+    ]
+  },
+  "references": [
+    {
+      "url": "https://vetmed.illinois.edu/imaging_anatomy/canine/forelimb/carpus_foot/ex02/ex02.html",
+      "use": "Separate carpus, metacarpus and digital anatomy."
+    },
+    {
+      "url": "https://vetmed.illinois.edu/demo-sa-orthopedics/orthopedic-exam-forelimb/",
+      "use": "Forelimb joint flexion and extension; do not equate passive clinical ROM with gait."
+    },
+    {
+      "url": "https://www.frontiersin.org/journals/bioengineering-and-biotechnology/articles/10.3389/fbioe.2020.00150/full",
+      "use": "Coupled hip, stifle and tarsal motion across stance and swing. Not subject-specific motion data."
+    },
+    {
+      "url": "https://www.frontiersin.org/journals/veterinary-science/articles/10.3389/fvets.2021.709967/full",
+      "use": "Upper cervical nod, axial rotation and coupled lateral motion; use as qualitative guidance, not a Shih Tzu numerical limit."
+    },
+    {
+      "url": "https://docs.blender.org/manual/id/5.1/addons/rigging/rigify/rig_types/limbs.html",
+      "use": "Four/five-link paw-chain and distinct front/rear IK design reference. This file extends the existing rig, not a Rigify-generated skeleton."
+    }
+  ],
+  "limitations": [
+    "Joint centers are fitted to the stylized mesh; no radiographs of Bonggu.",
+    "Working rotation bounds are animator safeguards, not veterinary joint ROM.",
+    "Continuous source toes support gentle curl, not separated digit splaying."
+  ]
+}

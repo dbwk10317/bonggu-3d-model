@@ -1,0 +1,34 @@
+{
+  "source": "rigged/bonggu-v2-rigged.blend",
+  "source_sha256": "0faaba9b246b5b055b669260fca5f07f3bfb93f60be85a4573411b057e0b3869",
+  "fps": 30,
+  "clips": {
+    "PawScrabble": {
+      "duration": 4.0,
+      "frames": 121,
+      "min_z": 0.002208247547969222,
+      "max_ik_error": 1.0834192035277733e-06,
+      "max_edge_stretch": 4.483077077422334,
+      "max_p99_edge_stretch": 1.2490391244985533,
+      "loop_error": 0.0
+    },
+    "SniffAround": {
+      "duration": 4.8,
+      "frames": 145,
+      "min_z": 0.0022082512732595205,
+      "max_ik_error": 8.304974738362415e-08,
+      "max_edge_stretch": 2.7848845343356303,
+      "max_p99_edge_stretch": 1.3137370026473012,
+      "loop_error": 0.0
+    },
+    "GentleHowl": {
+      "duration": 5.0,
+      "frames": 151,
+      "min_z": 0.0022082484792917967,
+      "max_ik_error": 9.18569267238524e-08,
+      "max_edge_stretch": 2.2537551915094354,
+      "max_p99_edge_stretch": 1.2899168018496794,
+      "loop_error": 0.0
+    }
+  }
+}

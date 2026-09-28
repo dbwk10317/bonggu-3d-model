@@ -1,0 +1,83 @@
+{
+  "version": "v2",
+  "status": "owner-approved",
+  "approved_at": "2026-09-25T12:27:36.216676+09:00",
+  "scope": "Approved static appearance: accepted head and body with regenerated volumetric tail; illustrated texture. Rigging and facial animation are not part of this release.",
+  "desktop_model": "bonggu-v2-desktop.glb",
+  "master_blend": "bonggu-v2-master.blend",
+  "preview": "bonggu-v2-preview.png",
+  "turntable": "bonggu-v2-turntable.mp4",
+  "files": {
+    "bonggu-v2-master.blend": {
+      "bytes": 17097003,
+      "sha256": "e04d5a5dd2d01fdcc6d84def7ff3e92d9f63b2bcea43958d91f517aec5dc6107"
+    },
+    "bonggu-v2-master.glb": {
+      "bytes": 19792540,
+      "sha256": "e1348784e77f99e723066555a26b1d548c124653d6d4def33bf945f12a85aea3"
+    },
+    "bonggu-v2-desktop.blend": {
+      "bytes": 6476423,
+      "sha256": "60530bcd3025157e4dcd4457b99d2b66b272cb9d7c032d7bcab62c17f6d4f283"
+    },
+    "bonggu-v2-desktop.glb": {
+      "bytes": 6083524,
+      "sha256": "d71c20a77b558ba029ca97636434d97bc63fb94166f12f1910d8cdfa3cdea356"
+    },
+    "bonggu-color-4k.png": {
+      "bytes": 5183477,
+      "sha256": "dc1134f24be9d1c0918fddf924b26c9c835fb327a6eee78a364e7c4ee56791b3"
+    },
+    "bonggu-color-2k.png": {
+      "bytes": 1882659,
+      "sha256": "07e8f6fe95094cc6394489c3dc438dd48f078adb060f8a3d888d26966ec74e6d"
+    },
+    "bonggu-v2-preview.png": {
+      "bytes": 572070,
+      "sha256": "d79eb36547cd9ed08e44acf7477c8e8e77908826a544fb337ac84c621a58310c"
+    },
+    "bonggu-v2-turntable.mp4": {
+      "bytes": 257284,
+      "sha256": "bf8e4ee6efff6b694d923de9babfdd7d2f0aa66e1ed4194c2adb3c574738c872"
+    }
+  },
+  "validation": {
+    "head_reference": "../references/head-turnaround.png",
+    "body_reference": "../references/shape-turnaround.png",
+    "body_paint": "Native Blender vertex paint: simplified wraparound patches and broad illustration shading; baked to a UV texture",
+    "top_reference_inferred": false,
+    "meshy_texture_used": false,
+    "master_triangles": 505204,
+    "desktop_triangles": 34997,
+    "master_texture": [
+      4096,
+      4096
+    ],
+    "desktop_texture": [
+      2048,
+      2048
+    ],
+    "unlit": true,
+    "rigged": false,
+    "facial_expressions": false,
+    "new_geometry_candidate": true,
+    "assets": {
+      "master": {
+        "file": "bonggu-v2-master.glb",
+        "bytes": 19792540,
+        "triangles": 505204,
+        "embedded_texture": true,
+        "unlit": true
+      },
+      "desktop": {
+        "file": "bonggu-v2-desktop.glb",
+        "bytes": 6083524,
+        "triangles": 34997,
+        "embedded_texture": true,
+        "unlit": true
+      }
+    },
+    "glb_roundtrip_mean_absolute_error": 8.296960982866585e-05,
+    "glb_roundtrip_passed": true
+  }
+}

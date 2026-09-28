@@ -1,0 +1,33 @@
+{
+  "model": "bonggu-v2-behaviors.glb",
+  "blender": "bonggu-v2-behaviors.blend",
+  "preview": "bonggu-behaviors-preview.mp4",
+  "fps": 30,
+  "audio": false,
+  "clips": [
+    {
+      "name": "PawScrabble",
+      "label": "앞발 파바바박",
+      "duration_seconds": 4.0,
+      "preview": "PawScrabble.mp4",
+      "playback": "once or loop; starts and ends neutral"
+    },
+    {
+      "name": "SniffAround",
+      "label": "킁킁 · 냄새 찾기",
+      "duration_seconds": 4.8,
+      "preview": "SniffAround.mp4",
+      "playback": "once or loop; starts and ends neutral"
+    },
+    {
+      "name": "GentleHowl",
+      "label": "하울링하는 모습",
+      "duration_seconds": 5.0,
+      "preview": "GentleHowl.mp4",
+      "playback": "once or loop; starts and ends neutral"
+    }
+  ],
+  "retained_clip": "RigDemo",
+  "references": "references.json",
+  "validation": "validation.json"
+}

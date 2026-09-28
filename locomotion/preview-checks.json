@@ -1,0 +1,110 @@
+{
+  "Idle.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "3.000000",
+    "nb_frames": "90"
+  },
+  "Walk.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "1.200000",
+    "nb_frames": "36"
+  },
+  "Run.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "0.600000",
+    "nb_frames": "18"
+  },
+  "SitDown.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "1.400000",
+    "nb_frames": "42"
+  },
+  "SitIdle.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "3.000000",
+    "nb_frames": "90"
+  },
+  "SitUp.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "1.200000",
+    "nb_frames": "36"
+  },
+  "LieDown.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "1.600000",
+    "nb_frames": "48"
+  },
+  "LieIdle.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "3.000000",
+    "nb_frames": "90"
+  },
+  "LieUp.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "1.400000",
+    "nb_frames": "42"
+  },
+  "PlayBow.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "3.000000",
+    "nb_frames": "90"
+  },
+  "LookAround.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "4.000000",
+    "nb_frames": "120"
+  },
+  "GroundSniff.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "4.000000",
+    "nb_frames": "120"
+  },
+  "LookUp.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "3.600000",
+    "nb_frames": "108"
+  },
+  "TailWagSoft.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "4.000000",
+    "nb_frames": "120"
+  },
+  "TailWagHappy.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "3.200000",
+    "nb_frames": "96"
+  },
+  "TailLower.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "1.400000",
+    "nb_frames": "42"
+  },
+  "TailLowIdle.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "3.000000",
+    "nb_frames": "90"
+  },
+  "TailRaise.mp4": {
+    "width": 800,
+    "height": 782,
+    "duration": "1.400000",
+    "nb_frames": "42"
+  }
+}
