@@ -4,7 +4,7 @@
   "protected_vertices_unchanged": 17668,
   "native_bones": 112,
   "skin_joints": 78,
-  "triangles": 36968,
+  "triangles": 36201,
   "max_texture_size": 2048,
   "morph_targets": [
     "Smile",
@@ -12,7 +12,7 @@
     "EyesClosed"
   ],
   "morph_animation": false,
-  "bytes": 7076068,
+  "bytes": 7014420,
   "clips": {
     "Idle": {
       "duration": 9.0,
@@ -153,12 +153,18 @@
       "smile": 0.0
     }
   },
+  "back_surface": {
+    "triangles": 831,
+    "upward_facing": true,
+    "closed": true,
+    "animated_intersection_checks": 69
+  },
   "transition_endpoints_match": true,
   "reimport_render_checks": 69,
   "reimport_render_max_error": 0.0,
   "approved_release_unchanged": true,
   "sha256": {
-    "bonggu-v2-everyday.blend": "c8627cafb9d2681a30df921739811e6c2d1f0deae67fc7110ded418811ed633e",
-    "bonggu-v2-everyday.glb": "f5559c45e2b5100d11b8afd119fdd9ffe3048c81772168543216b2957ff5f77a"
+    "bonggu-v2-everyday.blend": "075de81216d6f435658feb5960dd8e25083afa726e0c9d72f6dbf49400b07931",
+    "bonggu-v2-everyday.glb": "71f9c3e01d67801bf8333a03ebe18987da14354fe2f0bd89d24bb2557c571a81"
   }
 }

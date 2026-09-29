@@ -21,7 +21,7 @@ Blender 원본, GLB, 리그와 동작을 담고 있습니다. 데스크톱 앱 �
 | 정적 경량 모델 | [bonggu-v2-desktop.glb](release/bonggu-v2-desktop.glb) |
 | 그림 설계도 | [references/](references/) |
 
-최신 GLB는 약 6.7MiB, 36,968 삼각형, 78개 스킨 관절이며 `Smile`·`Yawn`·`EyesClosed` 표정과 23개 동작을 포함합니다.
+최신 GLB는 약 6.7MiB, 36,201 삼각형, 78개 스킨 관절이며 `Smile`·`Yawn`·`EyesClosed` 표정과 23개 동작을 포함합니다.
 Blender 편집 리그는 조작·보조 본을 포함해 112개 본입니다. 실행용 모델은 승인된 2K 텍스처를 내장합니다.
 고화질 정적 원본은 505,204 삼각형과 4K 텍스처를 보존합니다.
 
@@ -95,9 +95,11 @@ blender -b --python-exit-code 1 --python locomotion/build-locomotion.py
 blender -b --python-exit-code 1 --python locomotion/verify-locomotion.py
 ```
 
-중립 리그까지 재생성할 때는 `locomotion/prepare-tail-rig.py`를 먼저 실행합니다. 꼬리 표면을 다시 만들고,
+중립 리그까지 재생성할 때는 `locomotion/prepare-tail-rig.py`를 먼저 실행합니다. 꼬리 표면과 등 접촉부를 다시 만들고,
 허벅지·어깨 살이 대퇴골·견갑골을 따르도록 가중치를 넓힌 뒤, 앉거나 엎드릴 때 접힌 뒷다리가 엉덩이를
 뚫지 않도록 엉덩이~발목 가중치를 다듬은 중립 리그를 만듭니다.
+등 접촉부는 기존 테두리를 유지한 채 겹치지 않는 삼각형으로 채웁니다. 검증 스크립트는 이 표면의 뒤집힘·열린 경계와
+각 동작의 표본 프레임에서 몸통과의 자기 교차를 검사합니다.
 다시 실행해도 형상·UV·Smile·가중치는 같고, 꼬리 색은 부동소수점 끝자리 수준(1e-7 미만)만 달라집니다.
 더 앞 단계의 편집 소스는 `expressions/smile/refined/`, `rigged/`, `rigged/anatomy/`에 있습니다.
 고화질 정적 모델은 완성된 원본으로 제공하며 Meshy 생성 과정은 이 저장소의 재생성 범위에 포함하지 않습니다.

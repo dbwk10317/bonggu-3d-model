@@ -1,7 +1,7 @@
 {
   "source_sha256": "552c58d6cb290199dcc0e78704550c1acd2143e7948dccec809bd4de56b14ad8",
   "protected_vertices_unchanged": 17668,
-  "triangles": 36968,
+  "triangles": 36201,
   "native_bones": 112,
   "skin_joints": 78,
   "max_influences": 4,
@@ -10,6 +10,13 @@
     "6c51bac13cfcf5b44fe59b2bea3a697e282970c549f746a4255af731a1bbbfba",
     "dc1134f24be9d1c0918fddf924b26c9c835fb327a6eee78a364e7c4ee56791b3"
   ],
+  "back_patch": {
+    "triangles": 831,
+    "boundary_vertices": 99,
+    "new_vertices": 367,
+    "min_normal_z": 0.019585,
+    "closed_boundary": true
+  },
   "face_keys": {
     "Yawn": {
       "from": "Smile",

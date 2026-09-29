@@ -2,7 +2,7 @@
 import bpy,bmesh,math,numpy as np,json,hashlib
 from mathutils import Vector,Matrix,Quaternion
 from mathutils.bvhtree import BVHTree
-from mathutils.geometry import barycentric_transform
+from mathutils.geometry import barycentric_transform,delaunay_2d_cdt
 from pathlib import Path
 OUT=Path(__file__).resolve().parent
 SOURCE=OUT.parent/'rigged/anatomy/bonggu-v2-anatomy-rig.blend'
@@ -14,6 +14,10 @@ rig.animation_data.action=None
 for p in rig.pose.bones:
  if not p.name.startswith(('MCH.Neck.','MCH.HeadGaze')):p.matrix_basis=Matrix.Identity(4)
 original_keys={k.name:np.array([v.co[:] for v in k.data]) for k in pet.data.shape_keys.key_blocks}
+def protected_uv_corners():
+ uv=pet.data.uv_layers.active.data
+ return {(p.material_index,tuple(pet.data.vertices[pet.data.loops[i].vertex_index].co),tuple(uv[i].uv)) for p in pet.data.polygons if all(pet.data.vertices[j].co.y<=.075 or pet.data.vertices[j].co.z<=.195 for j in p.vertices) for i in p.loop_indices}
+original_uv_corners=protected_uv_corners()
 pet.data.calc_loop_triangles()
 sourceco=[v.co.copy() for v in pet.data.vertices];sourcefaces=[list(p.vertices) for p in pet.data.loop_triangles];sourceuv=[[Vector((*pet.data.uv_layers.active.data[i].uv,0)) for i in p.loops] for p in pet.data.loop_triangles]
 bvh=BVHTree.FromPolygons(sourceco,sourcefaces,all_triangles=True)
@@ -55,27 +59,58 @@ for v in bm.verts:
  if total<1e-8:weights[pelvis]=1
  else:
   for i in list(weights.keys()):weights[i]/=total
-boundary=[e for e in bm.edges if e.is_boundary and all(abs(v.co.z+.35*v.co.y-.278)<2e-6 for v in e.verts)]
-# Fill the small back opening, with a rounded surface following the rump.
-filled=bmesh.ops.holes_fill(bm,edges=boundary,sides=0)['faces']
-for f in list(filled):
- ring=list(f.verts);point=sum((v.co for v in ring),Vector())/len(ring)
- center=bm.verts.new(point);center[dw][pelvis]=1
- for v in ring+[center]:
-  original=v.co.z;target=.241-2.1*(v.co.y-.065)**2-3*v.co.x*v.co.x
-  v.co.z=target
+# Remove the folded contact surface as well as the old tail. Flattening it left
+# overlapping sheets; a fan across its concave outline also reversed triangles.
+old_boundary={e for e in bm.edges if e.is_boundary}
+bmesh.ops.delete(bm,geom=[v for v in bm.verts if v.co.y>.09 and v.co.z>.205],context='VERTS')
+boundary=[e for e in bm.edges if e.is_boundary and e not in old_boundary]
+boundary_set=set(boundary);rim={v for e in boundary for v in e.verts}
+assert boundary and all(sum(e in boundary_set for e in v.link_edges)==2 for v in rim)
+bm.verts.index_update()
+ring=[min(rim,key=lambda v:v.index)]
+while True:
+ candidates=[e.other_vert(ring[-1]) for e in ring[-1].link_edges if e in boundary_set and (len(ring)==1 or e.other_vert(ring[-1])!=ring[-2])]
+ nxt=min(candidates,key=lambda v:v.index)
+ if nxt==ring[0]:break
+ assert nxt not in ring
+ ring.append(nxt)
+assert len(ring)==len(rim),'The back opening must be a single closed loop'
+if sum(a.co.x*b.co.y-b.co.x*a.co.y for a,b in zip(ring,ring[1:]+ring[:1]))<0:ring.reverse()
+
+# Fit the surrounding rump and blend its boundary residuals into the new surface.
+# Existing rim vertices, shape keys and UV loops stay in place.
+def back_features(x,y):
+ y-=.14
+ return [1,x,y,x*x,x*y,y*y]
+xy=np.array([v.co.xy[:] for v in ring]);z=np.array([v.co.z for v in ring])
+design=np.array([back_features(*p) for p in xy]);coeff=np.linalg.lstsq(design,z,rcond=None)[0]
+residual=z-design@coeff
+rim_weights=np.zeros((len(ring),len(pet.vertex_groups)))
+for i,v in enumerate(ring):
+ for group,weight in v[dw].items():rim_weights[i,group]=weight
+coords=[Vector(p) for p in xy]+[Vector((x,y)) for x in np.arange(xy[:,0].min()+.005,xy[:,0].max(),.005) for y in np.arange(xy[:,1].min()+.005,xy[:,1].max(),.005)]
+co,_,faces,orig,_,_=delaunay_2d_cdt(coords,[],[list(range(len(ring)))],1,1e-8)
+vmap={}
+for i in sorted({i for f in faces for i in f}):
+ source=[j for j in orig[i] if j<len(ring)]
+ assert len(source)<=1,'Triangulation must preserve every rim vertex'
+ if source:vmap[i]=ring[source[0]]
+ else:
+  w=1/np.maximum(np.sum((xy-np.array(co[i]))**2,axis=1),1e-12);w/=w.sum()
+  height=float(np.dot(back_features(*co[i]),coeff)+np.dot(w,residual))
+  v=bm.verts.new((co[i].x,co[i].y,height))
   for layer in keys:v[layer]=v.co
- bm.faces.remove(f)
- for a,b in zip(ring,ring[1:]+ring[:1]):
-  face=bm.faces.new((a,b,center));face.material_index=2;face.smooth=True
-  for l in face.loops:l[paint]=color_at(l.vert.co)
-# Flatten only the former tip-to-back contact into the nearby back surface.
-for v in bm.verts:
- if .085<v.co.y<.168 and v.co.z>.220:
-  ceiling=.241-2.1*(v.co.y-.065)**2-3*v.co.x*v.co.x
-  if v.co.z>ceiling:
-   delta=ceiling-v.co.z;v.co.z+=delta
-   for layer in keys:v[layer].z+=delta
+  for group,weight in enumerate(w@rim_weights):
+   if weight>1e-8:v[dw][group]=float(weight)
+  vmap[i]=v
+patch=[]
+for indices in faces:
+ f=bm.faces.new([vmap[i] for i in indices]);f.material_index=2;f.smooth=True;patch.append(f)
+ for l in f.loops:l[paint]=color_at(l.vert.co)
+bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces))
+assert all(e.is_manifold for e in boundary),'The new back must join the body without gaps'
+assert all(f.normal.z>0 and f.calc_area()>1e-12 for f in patch),'No folded or degenerate back triangles'
+back_patch={'triangles':len(patch),'boundary_vertices':len(ring),'new_vertices':len(vmap)-len(ring),'min_normal_z':round(min(f.normal.z for f in patch),6),'closed_boundary':True}
 # Build a smooth curled plume matching the reference silhouette. UVs are projected from the old painted tail.
 points=[rig.data.bones['Tail.01'].head_local.copy()]+[rig.data.bones[f'Tail.{i:02}'].tail_local.copy() for i in range(1,9)]
 rx=[.011,.014,.020,.028,.032,.030,.023,.015,.003]
@@ -122,6 +157,7 @@ for k in pet.data.shape_keys.key_blocks:
  actual=np.array([v.co[:] for v in k.data]);mask=(actual[:,1]<=.075)|(actual[:,2]<=.195)
  def rows(x):return sorted(tuple(round(float(c),7) for c in row) for row in x)
  assert rows(actual[mask])==rows(original),k.name
+assert protected_uv_corners()==original_uv_corners,'Protected body UVs changed'
 # Face keys for yawning and sleeping, built from the approved Smile mouth and painted eyes.
 def sm01(t):t=np.clip(t,0,1);return t*t*(3-2*t)
 face_co=np.array([v.co[:] for v in pet.data.vertices]);face_smile=np.array([v.co[:] for v in pet.data.shape_keys.key_blocks['Smile'].data])
@@ -195,6 +231,7 @@ pet.data.color_attributes.active_color=pet.data.color_attributes['TailPaint']
 scene.frame_set(1);bpy.context.view_layer.update()
 pet.data.calc_loop_triangles()
 report={'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'protected_vertices_unchanged':int(protected.sum()),'triangles':len(pet.data.loop_triangles),'native_bones':len(rig.data.bones),'skin_joints':sum(b.use_deform for b in rig.data.bones),'max_influences':4,'changes':'Rebuilt the welded tail plume as a deformable curved surface, closed and smoothed the back contact, transferred source paint to linear vertex colors. Face and body outside the tail contact region are unchanged.','texture_sha256':sorted(hashlib.sha256(im.packed_file.data).hexdigest() for im in bpy.data.images if im.packed_file),
+ 'back_patch':back_patch,
  'face_keys':{'Yawn':{'from':'Smile','jaw_hinge_yz':HINGE,'extra_jaw_radians':JAW},'EyesClosed':{'eye_centre_xz':[EYE_X,EYE_Z],'lid_line_below_centre_m':-LID},'changed_vertices':{'Yawn':int((np.abs(yawn-face_co).max(axis=1)>1e-6).sum()),'EyesClosed':int((np.abs(closed-face_co).max(axis=1)>1e-6).sum())}},
  'limb_coverage':{'max_share':.7,'hind':'capsule around Hind.Upper, 0.025-0.08 m','fore':'capsule from Scapula top to elbow, 0.02-0.075 m','outer_side_only':'x beyond 0.02-0.035 m'},
  'hip_weight_smoothing':{'iterations':SMOOTHING,'vertices':int(region.sum()),'groups':'Pelvis, Hind.Upper, Hind.Lower, Hind.Hock','region':'rest pose y > 0.08 m and z < 0.17 m','appearance_unchanged':True}}

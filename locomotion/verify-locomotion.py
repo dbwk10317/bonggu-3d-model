@@ -3,6 +3,7 @@ import bpy,struct,json,hashlib
 import numpy as np
 from pathlib import Path
 from mathutils import Vector
+from mathutils.bvhtree import BVHTree
 out=Path(__file__).resolve().parent
 manifest=json.loads((out/'clips.json').read_text(encoding='utf-8'));expected={c['name']:c for c in manifest['clips']}
 state_loop={'stand':'Idle','walk':'Walk','run':'Run','sit':'SitIdle','lie':'LieIdle','tail-low':'TailLowIdle','sleep':'SleepIdle','held':'Dangle'}
@@ -25,6 +26,22 @@ texture_2k=m['files']['bonggu-color-2k.png']['sha256'];texture_4k=m['files']['bo
 assert everyday['textures']==sorted([t for t in source_fingerprint['textures'] if t!=texture_4k]+[texture_2k])
 tail_checks=json.loads((out/'tail-rig-checks.json').read_text())
 assert tail_checks['protected_vertices_unchanged']>=17668
+# The rebuilt contact is one upward-facing sheet, joined to the existing body.
+# The former concave fan produced reversed, overlapping triangles here.
+tail_groups={g.index for g in pet.vertex_groups if g.name.startswith('Tail.')}
+tail_vertices={v.index for v in pet.data.vertices if any(g.group in tail_groups and g.weight>0 for g in v.groups)}
+patch=[p for p in pet.data.polygons if pet.data.materials[p.material_index].name=='Bonggu.TailPaint' and not any(i in tail_vertices for i in p.vertices)]
+assert len(patch)==tail_checks['back_patch']['triangles']>0
+assert all(p.normal.z>0 and p.area>1e-12 for p in patch),'Folded or degenerate back surface'
+edge_faces={}
+for p in pet.data.polygons:
+    for edge in p.edge_keys:edge_faces[edge]=edge_faces.get(edge,0)+1
+assert all(edge_faces[e]==2 for p in patch for e in p.edge_keys),'Open back surface'
+body_faces=[p for p in pet.data.polygons if not any(i in tail_vertices for i in p.vertices)]
+patch_indices={p.index for p in patch}
+patch_in_body={i for i,p in enumerate(body_faces) if p.index in patch_indices}
+body_triangles=[tuple(p.vertices) for p in body_faces]
+body_vertices=[set(f) for f in body_triangles]
 assert tail_checks['hip_weight_smoothing']['appearance_unchanged'] and pet['hip_weight_smoothing']==tail_checks['hip_weight_smoothing']['iterations']
 assert tail_checks['texture_sha256']==source_fingerprint['textures']
 assert len(rig.data.bones)==112
@@ -57,6 +74,7 @@ assert all(set(c.get('morphs',{}))<={'Yawn','EyesClosed'} for c in manifest['cli
 assert not any(c['target']['path']=='weights' for a in j['animations'] for c in a['channels'])
 report={'prepared_rig_appearance_preserved':True,'tail_topology_updated':True,'protected_vertices_unchanged':tail_checks['protected_vertices_unchanged'],'native_bones':112,'skin_joints':78,'triangles':triangles,
     'max_texture_size':max(max(image_size(im)) for im in j['images']),'morph_targets':j['meshes'][0]['extras']['targetNames'],'morph_animation':False,'bytes':len(raw),'clips':{}}
+report['back_surface']={'triangles':len(patch),'upward_facing':True,'closed':True}
 ends={}
 for animation in j['animations']:
     name=animation['name'];spec=expected[name];samples=animation['samplers']
@@ -93,7 +111,12 @@ for name,frames in samples.items():
     for track in rig.animation_data.nla_tracks:track.mute=track.name!=name
     aim_camera(name)
     for frame in frames:
-        scene.frame_set(frame);scene.render.filepath=str(out/f'check-{name}-{frame:03}.png');bpy.ops.render.render(write_still=True)
+        scene.frame_set(frame)
+        mesh=pet.evaluated_get(bpy.context.evaluated_depsgraph_get()).data
+        tree=BVHTree.FromPolygons([v.co for v in mesh.vertices],body_triangles,all_triangles=True)
+        intersections=[(a,b) for a,b in tree.overlap(tree) if a<b and (a in patch_in_body or b in patch_in_body) and not body_vertices[a]&body_vertices[b]]
+        assert not intersections,('Back surface intersects the body',name,frame,intersections[:5])
+        scene.render.filepath=str(out/f'check-{name}-{frame:03}.png');bpy.ops.render.render(write_still=True)
         image=bpy.data.images.load(scene.render.filepath,check_existing=False);native[name,frame]=np.array(image.pixels[:]);bpy.data.images.remove(image)
 for ob in list(bpy.data.objects):
     if ob.type in {'MESH','ARMATURE'}:bpy.data.objects.remove(ob,do_unlink=True)
@@ -118,6 +141,7 @@ for name,frames in samples.items():
         errors.append(error)
 # Rounded so a rerun on another machine does not rewrite this file.
 report['reimport_render_checks']=len(errors);report['reimport_render_max_error']=round(max(errors),4)
+report['back_surface']['animated_intersection_checks']=sum(map(len,samples.values()))
 for name,entry in m['files'].items():assert sha((release/name).read_bytes())==entry['sha256']
 report['approved_release_unchanged']=True
 report['sha256']={name:sha((out/name).read_bytes()) for name in ['bonggu-v2-everyday.blend','bonggu-v2-everyday.glb']}
